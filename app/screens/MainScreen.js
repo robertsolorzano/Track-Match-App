@@ -1,8 +1,8 @@
 //MainScreen.js
 
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView , StyleSheet } from 'react-native';
-import { displayTrackInfo as DisplayTrackInfo } from '../TrackDisplay'; // Notice the capitalization
+import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import TrackDisplay from '../TrackDisplay';
 
 
 const App = () => {
@@ -53,10 +53,10 @@ const handleSearch = async () => {
 
   
 function renderSearchResults() {
-  if (searchResults && Array.isArray(searchResults.tracks)) {
+  if (searchResults && Array.isArray(searchResults.tracks) && searchResults.tracks.length > 0) {
     return (
       <ScrollView>
-        {DisplayTrackInfo(searchResults)}
+        <TrackDisplay data={searchResults} />
       </ScrollView>
     );
   } else {
@@ -67,6 +67,7 @@ function renderSearchResults() {
     );
   }
 }
+
 
   return (
     <View style={styles.container}>
