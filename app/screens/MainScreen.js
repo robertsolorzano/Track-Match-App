@@ -73,7 +73,8 @@ function renderSearchResults() {
 
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Track Match</Text>
-          <Image source={require('../app/assets/FullLogo_Transparent_NoBuffer.png')} style={styles.logo} />
+          <Image source={require('../assets/FullLogo_Transparent_NoBuffer.png')
+} style={styles.logo} />
         </View>
         <View style={styles.containerMotto}>
           <Text style={styles.motto}>
