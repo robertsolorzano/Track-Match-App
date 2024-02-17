@@ -59,8 +59,6 @@ const MainScreen  = () => {
         setSearchText={setSearchText}
         onSearch={handleSearch}
       />
-
-      <Text style={styles.resultTitle}>Search Results:</Text>
       <SearchResults results={searchResults} />
     </View>
   );
