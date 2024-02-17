@@ -1,3 +1,4 @@
+// SpotifyLink.js
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Linking } from 'react-native';
 

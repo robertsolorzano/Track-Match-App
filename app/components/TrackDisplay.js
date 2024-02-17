@@ -16,7 +16,7 @@ const TrackDisplay = ({ data }) => {
   const originalTrackId = originalTrack ? originalTrack.id : null;
   const audioFeaturesMap = new Map();
   
-  const relativeSongIds = new Set([...relativeSongs, ...analysisNewTempoSongs].map(song => song.id));
+  const relativeSongIds = new Set([...relativeSongs, ...relativeNewTempoSongs].map(song => song.id));
 
   [analysisSongs, relativeSongs, analysisNewTempoSongs, relativeNewTempoSongs].forEach((featureArray) => {
     featureArray.forEach((feature) => {

@@ -15,10 +15,11 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
   const spotifyUrl = track.external_urls.spotify;
 
   return (
-    <View key={track.id} style={styles.trackContainer}>
+    <View style={styles.trackContainer}>
       <Text style={styles.trackTitle}>{track.name}</Text>
-      <Text style={styles.trackInfo}>{isRelative ? 'Relative Track' : 'Original Track'}</Text>
-      <Text style={styles.trackInfo}>Key: {keyLetter} {mode}</Text>
+      <Text style={styles.trackInfo}>
+        {isRelative ? 'Relative' : 'Original'} Key: {keyLetter} {mode}
+      </Text>
       <Text style={styles.trackInfo}>Tempo: {audioFeatures.tempo.toFixed(2)} BPM</Text>
       <Text style={styles.trackInfo}>Time Signature: {timeSignature}</Text>
       <Text style={styles.trackInfo}>Duration: {duration}</Text>
