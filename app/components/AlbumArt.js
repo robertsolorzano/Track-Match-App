@@ -10,9 +10,10 @@ export default AlbumArt;
 
 const styles = StyleSheet.create({
   albumCover: {
-    width: 100, 
-    height: 100, 
+    width: 200, 
+    height: 200, 
     borderRadius: 10,
     marginTop: 10,
+    alignSelf: 'center',
   },
 });

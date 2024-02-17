@@ -54,12 +54,6 @@ const MainScreen  = () => {
         <Image source={require('../assets/FullLogo_Transparent_NoBuffer.png')} style={styles.logo} />
       </View>
 
-      <View style={styles.containerMotto}>
-        <Text style={styles.motto}>
-          Search your favorite tracks and discover perfect harmonic matches from a vast library of over 100 million songs
-        </Text>
-      </View>
-
       <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
@@ -82,6 +76,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
     marginBottom: 20,
   },
   title: {
@@ -92,13 +87,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     resizeMode: 'contain',
-  },
-  containerMotto: {
-    textAlign: 'center',
-  },
-  motto: {
-    color: '#fff',
-    fontSize: 14,
   },
   resultTitle: {
     color: '#fff',

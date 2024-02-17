@@ -16,6 +16,7 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
 
   return (
     <View style={styles.trackContainer}>
+      <AlbumArt url={albumArtUrl} />
       <Text style={styles.trackTitle}>{track.name}</Text>
       <Text style={styles.trackInfo}>
         {isRelative ? 'Relative' : 'Original'} Key: {keyLetter} {mode}
@@ -23,7 +24,6 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
       <Text style={styles.trackInfo}>Tempo: {audioFeatures.tempo.toFixed(2)} BPM</Text>
       <Text style={styles.trackInfo}>Time Signature: {timeSignature}</Text>
       <Text style={styles.trackInfo}>Duration: {duration}</Text>
-      <AlbumArt url={albumArtUrl} />
       <SpotifyLink url={spotifyUrl} />
       {/* Preview URL or any other elements can be added here */}
     </View>
@@ -36,25 +36,19 @@ const styles = {
     trackContainer: {
       backgroundColor: '#ffffff',
       padding: 10,
-      margin: 5,
-      borderRadius: 5,
+      marginBottom: 40,
+      borderRadius: 15,
+      width: 250,
+      alignSelf: 'center',
     },
     trackTitle: {
       fontSize: 16,
       fontWeight: 'bold',
+      alignSelf: 'center',
     },
     trackInfo: {
       fontSize: 14,
+      alignSelf: 'center',
     },
-    albumCover: {
-      width: 100, 
-      height: 100, 
-      borderRadius: 10,
-      marginTop: 10, 
-  },
-  spotifyLinkText: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-},
 };
   
