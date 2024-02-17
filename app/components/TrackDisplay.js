@@ -1,7 +1,7 @@
 // TrackDisplay.js
 import React from 'react';
 import { View } from 'react-native';
-import TrackElement from './components/TrackElement';
+import TrackElement from './TrackElement';
 
 const TrackDisplay = ({ data }) => {
   const {

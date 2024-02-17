@@ -1,11 +1,10 @@
-//MainScreen.js
-
+// MainScreen.js
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import TrackDisplay from '../TrackDisplay';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import SearchBar from '../components/SearchBar'; // Corrected path
+import SearchResults from '../components/SearchResults'; // Corrected path
 
-
-const App = () => {
+const MainScreen  = () => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState({
     analysisSongs: [],
@@ -16,94 +15,60 @@ const App = () => {
     original: null,
     originalTrack: null
   });
-  
 
-const handleSearch = async () => {
-  try {
-    const response = await fetch('http://192.168.0.51:3000/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ searchTerm: searchText }),
-    });
+  const handleSearch = async () => {
+    try {
+      const response = await fetch('http://192.168.0.51:3000/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ searchTerm: searchText }),
+      });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      setSearchResults({
+        analysisSongs: data.analysisSongs,
+        relativeSongs: data.relativeSongs,
+        analysisNewTempoSongs: data.analysisNewTempoSongs,
+        relativeNewTempoSongs: data.relativeNewTempoSongs,
+        tracks: data.tracks,
+        original: data.original,
+        originalTrack: data.originalTrack
+      });
+
+    } catch (error) {
+      console.error('Error searching for tracks:', error);
     }
-
-    const data = await response.json();
-
-    setSearchResults({
-      analysisSongs: data.analysisSongs,
-      relativeSongs: data.relativeSongs,
-      analysisNewTempoSongs: data.analysisNewTempoSongs,
-      relativeNewTempoSongs: data.relativeNewTempoSongs,
-      tracks: data.tracks,
-      original: data.original,
-      originalTrack: data.originalTrack
-    });
-    
-
-
-  } catch (error) {
-    console.error('Error searching for tracks:', error);
-  }
-};
-
-  
-function renderSearchResults() {
-  if (searchResults && Array.isArray(searchResults.tracks) && searchResults.tracks.length > 0) {
-    return (
-      <ScrollView>
-        <TrackDisplay data={searchResults} />
-      </ScrollView>
-    );
-  } else {
-    return (
-      <View>
-        <Text>No results to display</Text>
-      </View>
-    );
-  }
-}
-
+  };
 
   return (
     <View style={styles.container}>
-
-        <View style={styles.headerContainer}>
-          <Text style={styles.title}>Track Match</Text>
-          <Image source={require('../assets/FullLogo_Transparent_NoBuffer.png')
-} style={styles.logo} />
-        </View>
-        <View style={styles.containerMotto}>
-          <Text style={styles.motto}>
-        Search your favorite tracks and discover perfect harmonic matches from a vast library of over 100 million songs
-          </Text>
-
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <TextInput
-            placeholder="Search for Artist & Song Title..."
-            value={searchText}
-            onChangeText={(text) => setSearchText(text)}
-            style={styles.searchInput}
-          />
-              <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
-              <Text style={styles.searchButtonText}>Search</Text>
-              </TouchableOpacity>
-        </View>
-      {/* display search results */}
-      <View>
-
-
-        </View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Track Match</Text>
+        <Image source={require('../assets/FullLogo_Transparent_NoBuffer.png')} style={styles.logo} />
       </View>
-      <Text>Search Results:</Text>
-            {renderSearchResults()}
-          </View>
 
+      <View style={styles.containerMotto}>
+        <Text style={styles.motto}>
+          Search your favorite tracks and discover perfect harmonic matches from a vast library of over 100 million songs
+        </Text>
+      </View>
+
+      <SearchBar
+        searchText={searchText}
+        setSearchText={setSearchText}
+        onSearch={handleSearch}
+      />
+
+      <Text style={styles.resultTitle}>Search Results:</Text>
+      <SearchResults results={searchResults} />
+    </View>
   );
 };
 
@@ -114,15 +79,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 50, 
   },
-  containerMotto: {
-    textAlign: 'center',
-  },
   headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
@@ -136,25 +93,12 @@ const styles = StyleSheet.create({
     height: 40,
     resizeMode: 'contain',
   },
+  containerMotto: {
+    textAlign: 'center',
+  },
   motto: {
     color: '#fff',
     fontSize: 14,
-  },
-  searchInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#403e44',
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-  },
-  searchButton: {
-    backgroundColor: '#00a5ff',
-    padding: 10,
-    borderRadius: 5,
-  },
-  searchButtonText: {
-    color: 'white',
   },
   resultTitle: {
     color: '#fff',
@@ -162,4 +106,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-export default App;
+export default MainScreen;

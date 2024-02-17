@@ -1,6 +1,5 @@
-// SpotifyLink.js
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Linking } from 'react-native';
 
 const SpotifyLink = ({ url }) => (
   <TouchableOpacity onPress={() => Linking.openURL(url)}>
@@ -10,9 +9,9 @@ const SpotifyLink = ({ url }) => (
 
 export default SpotifyLink;
 
-const styles = {
+const styles = StyleSheet.create({
   spotifyLinkText: {
     color: 'blue',
     textDecorationLine: 'underline',
   },
-};
+});
