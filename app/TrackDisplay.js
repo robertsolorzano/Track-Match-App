@@ -47,14 +47,14 @@ export function modeNumberToMusicalKey(modeNumber) {
 export function togglePlayPause(audioPlayer, playIcon) {
     if (currentlyPlayingAudio && currentlyPlayingAudio !== audioPlayer) {
         currentlyPlayingAudio.pause();
-        currentlyPlayingAudio.parentNode.querySelector('.play-icon').style.backgroundImage = 'url("assets/images/play-icon.png")';
+        currentlyPlayingAudio.parentNode.querySelector('.play-icon').style.backgroundImage = 'url("app/assets/images/play-icon.png")';
     }
     if (audioPlayer.paused) {
         audioPlayer.play();
-        playIcon.style.backgroundImage = 'url("assets/pause-icon.png")';
+        playIcon.style.backgroundImage = 'url("../app/assets/pause-icon.png")';
     } else {
         audioPlayer.pause();
-        playIcon.style.backgroundImage = 'url("assets/play-icon.png")';
+        playIcon.style.backgroundImage = 'url("../app/assets/play-icon.png")';
     }
     currentlyPlayingAudio = audioPlayer.paused ? null : audioPlayer;
 }
@@ -143,7 +143,7 @@ const originalTrackId = originalTrack ? originalTrack.id : null;
                   <TouchableOpacity onPress={spotifyLink}>
                     <Text style={styles.spotifyLinkText}>Listen on Spotify</Text>
                 </TouchableOpacity>
-            {/* Assuming you want to do something with the preview URL */}
+            {/*want to do something with the preview URL */}
             <Text>Preview URL: {previewUrl}</Text>
         </View>
         
