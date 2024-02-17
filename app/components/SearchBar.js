@@ -1,5 +1,4 @@
 // SearchBar.js
-
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native'; // Import necessary components
 
