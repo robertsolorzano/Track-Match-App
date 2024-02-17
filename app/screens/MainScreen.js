@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, ScrollView , StyleSheet } from 'react-native';
-import { displayTrackInfo as DisplayTrackInfo } from '../app/TrackDisplay'; // Notice the capitalization
+import { displayTrackInfo as DisplayTrackInfo } from './TrackDisplay'; // Notice the capitalization
 
 
 const App = () => {
