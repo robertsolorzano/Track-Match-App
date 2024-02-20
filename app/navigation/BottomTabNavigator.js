@@ -20,13 +20,12 @@ const BottomTabNavigator = () => {
             iconName = focused ? 'search' : 'search-outline';
           }
 
+          // Return the icon component
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: 'tomato', 
+        tabBarInactiveTintColor: 'gray', 
       })}
-      tabBarOptions={{
-        activeTintColor: 'tomato', // Change the active tab color
-        inactiveTintColor: 'gray', // Change the inactive tab color
-      }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={MainScreen} />
