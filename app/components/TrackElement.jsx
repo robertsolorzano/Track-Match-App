@@ -1,9 +1,10 @@
+// TrackElement.jsx
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import AlbumArt from './AlbumArt';
 import SpotifyLink from './SpotifyLink';
-import { playSound } from './AudioManager'; // Assuming AudioManager.js is in the same directory
+import { playSound } from './AudioManager';
 
 const TrackElement = ({ track, audioFeatures, isRelative }) => {
   const mode = modeNumberToMusicalKey(audioFeatures.mode);
