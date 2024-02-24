@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { Audio } from 'expo-av';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import AlbumArt from './AlbumArt';
 import SpotifyLink from './SpotifyLink';
+import { playSound } from './AudioManager'; // Assuming AudioManager.js is in the same directory
 
 const TrackElement = ({ track, audioFeatures, isRelative }) => {
   const mode = modeNumberToMusicalKey(audioFeatures.mode);
@@ -12,15 +12,7 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
   const duration = msToTime(audioFeatures.duration_ms);
   const albumArtUrl = track.album.images[0].url;
   const spotifyUrl = track.external_urls.spotify;
-  const previewUrl = track.preview_url; // Obtain the preview URL from the track object
-
-  const playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      { uri: previewUrl },
-      { shouldPlay: true }
-    );
-    await sound.playAsync();
-  };
+  const previewUrl = track.preview_url;
 
   return (
     <View style={styles.trackContainer}>
@@ -34,7 +26,7 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
       <Text style={styles.trackInfo}>Duration: {duration}</Text>
       <SpotifyLink url={spotifyUrl} />
       {previewUrl && (
-        <Button title="Play Preview" onPress={playSound} />
+        <Button title="Play Preview" onPress={() => playSound(previewUrl)} />
       )}
     </View>
   );
@@ -42,7 +34,6 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
 
 export default TrackElement;
 
-// Update your styles object to include styles for the preview container and label
 const styles = {
     trackContainer: {
       backgroundColor: '#ffffff',
