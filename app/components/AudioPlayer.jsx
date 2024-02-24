@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import { MaterialIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     slider: {
         flex: 1,
-        marginLeft: 20,
+        marginLeft: 10,
     },
 });
 
