@@ -1,41 +1,44 @@
-// AudioPlayer.js
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
-import { MaterialIcons } from '@expo/vector-icons'; // For play/pause icons
+import { MaterialIcons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 
+let currentSound = null; // Global variable to track the current sound object
+
 const AudioPlayer = ({ previewUrl }) => {
-    const [sound, setSound] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
 
     useEffect(() => {
-        return sound
-            ? () => {
-                sound.unloadAsync();
-              }
-            : undefined;
-    }, [sound]);
+        return () => {
+            // Ensure the sound is unloaded when the component unmounts
+            if (currentSound) {
+                currentSound.unloadAsync();
+            }
+        };
+    }, []);
 
     const togglePlayback = async () => {
-        if (sound) {
-            if (isPlaying) {
-                await sound.pauseAsync();
-            } else {
-                await sound.playAsync();
-            }
-            setIsPlaying(!isPlaying);
-        } else {
-            const { sound: newSound, status } = await Audio.Sound.createAsync(
+        if (currentSound) {
+            await currentSound.unloadAsync();
+            currentSound = null;
+            setIsPlaying(false);
+        }
+
+        if (!isPlaying) {
+            const { sound, status } = await Audio.Sound.createAsync(
                 { uri: previewUrl },
                 { shouldPlay: true }
             );
-            setSound(newSound);
+            currentSound = sound;
             setIsPlaying(true);
             setDuration(status.durationMillis);
-            newSound.setOnPlaybackStatusUpdate(updateStatus);
+            sound.setOnPlaybackStatusUpdate(updateStatus);
+        } else if (isPlaying && currentSound) {
+            await currentSound.pauseAsync();
+            setIsPlaying(false);
         }
     };
 
@@ -44,6 +47,10 @@ const AudioPlayer = ({ previewUrl }) => {
         if (status.didJustFinish) {
             setIsPlaying(false);
             setProgress(0);
+            if (currentSound) {
+                currentSound.unloadAsync();
+                currentSound = null;
+            }
         }
     };
 
@@ -57,9 +64,9 @@ const AudioPlayer = ({ previewUrl }) => {
                 minimumValue={0}
                 maximumValue={duration}
                 value={progress}
-                onValueChange={(value) => {
-                    if (sound) {
-                        sound.setPositionAsync(value);
+                onValueChange={async (value) => {
+                    if (currentSound) {
+                        await currentSound.setPositionAsync(value);
                     }
                 }}
             />
