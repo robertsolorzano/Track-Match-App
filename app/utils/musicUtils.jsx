@@ -1,4 +1,4 @@
-//set variable of current audio player to null
+//musicUtils.jsx
 let currentlyPlayingAudio = null;
 
 export function keyNumberToLetter(keyNumber) {

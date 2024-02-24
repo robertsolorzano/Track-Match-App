@@ -1,4 +1,4 @@
-// BottomTabNavigator.js
+// BottomTabNavigator.jsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
@@ -23,13 +23,13 @@ const BottomTabNavigator = () => {
           // Return the icon component
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato', 
-        tabBarInactiveTintColor: 'gray', 
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={MainScreen} />
-      {/* Add more tabs here */}
+      {/* <Tab.Screen name="My Songs" component={MySongsScreen} /> */}
     </Tab.Navigator>
   );
 };

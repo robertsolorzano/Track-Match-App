@@ -8,7 +8,7 @@ require('dotenv').config();
 
 let globalAccessToken;
 let tokenExpirationTime;
-let totalSpotifyRequests = 0; 
+let totalSpotifyRequests = 0;
 
 // Initialize data storage
 const createDataStorage = () => {
@@ -17,35 +17,35 @@ const createDataStorage = () => {
     let lastAnalysisDataNewTempo = null;
     let lastRelativeDataNewTempo = null;
 
-// Function to update analysis data
-const updateData = (analysis, relative, analysisModTempo, relativeModTempo) => {
+    // Function to update analysis data
+    const updateData = (analysis, relative, analysisModTempo, relativeModTempo) => {
 
-    lastAnalysisData = {
-        bpm: parseFloat(analysis.bpm),
-        key: parseInt(analysis.key),
-        scale: parseInt(analysis.scale)
-    };
-    lastRelativeData = {
-        bpm: parseFloat(relative.bpm),
-        key: parseInt(relative.key),
-        scale: parseInt(relative.scale)
-    };
-    lastAnalysisDataNewTempo = {
-        bpm: parseFloat(analysisModTempo.bpm),
-        key: parseInt(analysisModTempo.key),
-        scale: parseInt(analysisModTempo.scale)
-    };
-    lastRelativeDataNewTempo = {
-        bpm: parseFloat(relativeModTempo.bpm),
-        key: parseInt(relativeModTempo.key),
-        scale: parseInt(relativeModTempo.scale)
-    };
+        lastAnalysisData = {
+            bpm: parseFloat(analysis.bpm),
+            key: parseInt(analysis.key),
+            scale: parseInt(analysis.scale)
+        };
+        lastRelativeData = {
+            bpm: parseFloat(relative.bpm),
+            key: parseInt(relative.key),
+            scale: parseInt(relative.scale)
+        };
+        lastAnalysisDataNewTempo = {
+            bpm: parseFloat(analysisModTempo.bpm),
+            key: parseInt(analysisModTempo.key),
+            scale: parseInt(analysisModTempo.scale)
+        };
+        lastRelativeDataNewTempo = {
+            bpm: parseFloat(relativeModTempo.bpm),
+            key: parseInt(relativeModTempo.key),
+            scale: parseInt(relativeModTempo.scale)
+        };
 
-    console.log('Updated data with lastAnalysisData:', lastAnalysisData);
-    console.log('Updated data with lastRelativeData:', lastRelativeData);
-    console.log('Updated data with lastAnalysisDataModTempo:', lastAnalysisDataNewTempo);
-    console.log('Updated data with lastRelativeDataModTempo:', lastRelativeDataNewTempo);
-};
+        console.log('Updated data with lastAnalysisData:', lastAnalysisData);
+        console.log('Updated data with lastRelativeData:', lastRelativeData);
+        console.log('Updated data with lastAnalysisDataModTempo:', lastAnalysisDataNewTempo);
+        console.log('Updated data with lastRelativeDataModTempo:', lastRelativeDataNewTempo);
+    };
 
     const getData = () => {
         return {
@@ -63,7 +63,7 @@ const updateData = (analysis, relative, analysisModTempo, relativeModTempo) => {
 const dataStorage = createDataStorage(); //create an instance to manage data
 
 async function getAccessToken() {
-    const clientId = process.env.SPOTIFY_CLIENT_ID; 
+    const clientId = process.env.SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
     const authOptions = {
@@ -126,15 +126,15 @@ async function getRecommendedTracks(seedTracks) {
 
 //rate limiter with the desired settings for spotify (1 request per second)
 const limiter = new Bottleneck({
-    maxConcurrent: 1,             
-    minTime: 300,         
-    highWater: 100,         
+    maxConcurrent: 1,
+    minTime: 300,
+    highWater: 100,
     strategy: Bottleneck.strategy.LEAK,
 });
 
 
 app.get('/get-songs', async function (req, res) {
-    console.log('GET /get-songs endpoint hit'); 
+    console.log('GET /get-songs endpoint hit');
     if (!globalAccessToken || Date.now() > tokenExpirationTime) {
         await getAccessToken();
         if (!globalAccessToken) {
@@ -145,10 +145,10 @@ app.get('/get-songs', async function (req, res) {
 
     const songName = req.query.songName;
     const artist = req.query.artist;
-    
+
     const searchQuery = `${songName} artist:${artist}`;
-    console.log('Search Query:', searchQuery); 
-    
+    console.log('Search Query:', searchQuery);
+
     const searchOptions = {
         url: `https://api.spotify.com/v1/search`,
         method: 'get',
@@ -161,26 +161,26 @@ app.get('/get-songs', async function (req, res) {
             limit: 1
         }
     };
-    
+
     try {
         const searchResponse = await axios(searchOptions);
-        totalSpotifyRequests++; 
+        totalSpotifyRequests++;
         const trackItems = searchResponse.data.tracks.items;
-    
+
         if (trackItems.length === 0) {
             res.status(404).send({ error: 'No tracks found for the given search criteria.' });
             return;
         }
-    
+
         let initialSeedTrack = trackItems[0].id; // Initialize with the first search result as the seed track
-        
+
         // Fetch initial recommendations to determine new seed tracks
         const initialRecommendations = await getRecommendedTracks([initialSeedTrack]);
         console.log(`Initial recommendation count: ${initialRecommendations.length}`);
 
         let allRecommendedTracks = []; // Store all fetched tracks here
         let seedTracks = initialRecommendations.slice(0, 1).map(track => track.id); // Take the first 1 tracks IDs from initial recommendations
-        allRecommendedTracks.push(...initialRecommendations); 
+        allRecommendedTracks.push(...initialRecommendations);
 
         // Loop for each seed track to get more recommendations
         for (let seed of seedTracks) {
@@ -230,7 +230,7 @@ app.get('/get-songs', async function (req, res) {
             const analysisKey = analysis.key;
             const analysisScale = analysis.scale;
             const analysisBpm = parseFloat(analysis.bpm);
-            
+
             return (
                 track.key === analysisKey &&
                 track.mode === analysisScale &&
@@ -245,7 +245,7 @@ app.get('/get-songs', async function (req, res) {
             const relativeKey = relative.key;
             const relativeScale = relative.scale;
             const relativeBpm = parseFloat(relative.bpm);
-            
+
             return (
                 track.key === relativeKey &&
                 track.mode === relativeScale &&
@@ -260,7 +260,7 @@ app.get('/get-songs', async function (req, res) {
             const analysisModTempoKey = analysisModTempo.key;
             const analysisModTempoScale = analysisModTempo.scale;
             const analysisModTempoBpm = parseFloat(analysisModTempo.bpm);
-            
+
             return (
                 track.key === analysisModTempoKey &&
                 track.mode === analysisModTempoScale &&
@@ -275,7 +275,7 @@ app.get('/get-songs', async function (req, res) {
             const relativeModTempoKey = relativeModTempo.key;
             const relativeModTempoScale = relativeModTempo.scale;
             const relativeModTempoBpm = parseFloat(relativeModTempo.bpm);
-            
+
             return (
                 track.key === relativeModTempoKey &&
                 track.mode === relativeModTempoScale &&
@@ -288,23 +288,23 @@ app.get('/get-songs', async function (req, res) {
 
 
 
-    // Calculate the total number of filtered tracks based on audio features
-    const totalFilteredTracks = filteredTracksAnalysis.length + filteredTracksRelative.length +
-        filteredTracksAnalysisNewTempo.length + filteredTracksRelativeNewTempo.length;
+        // Calculate the total number of filtered tracks based on audio features
+        const totalFilteredTracks = filteredTracksAnalysis.length + filteredTracksRelative.length +
+            filteredTracksAnalysisNewTempo.length + filteredTracksRelativeNewTempo.length;
 
-    console.log('Total Filtered Tracks:', totalFilteredTracks); // Log the total count
+        console.log('Total Filtered Tracks:', totalFilteredTracks); // Log the total count
 
-    // Merge the filtered tracks from all filters directly into the response
-    const response = {
-        analysisSongs: filteredTracksAnalysis,
-        relativeSongs: filteredTracksRelative,
-        analysisNewTempoSongs: filteredTracksAnalysisNewTempo,
-        relativeNewTempoSongs: filteredTracksRelativeNewTempo,
-        tracks: allRecommendedTracks,
-    };
+        // Merge the filtered tracks from all filters directly into the response
+        const response = {
+            analysisSongs: filteredTracksAnalysis,
+            relativeSongs: filteredTracksRelative,
+            analysisNewTempoSongs: filteredTracksAnalysisNewTempo,
+            relativeNewTempoSongs: filteredTracksRelativeNewTempo,
+            tracks: allRecommendedTracks,
+        };
 
-    // Send Response Object to Client
-    res.send(response);
+        // Send Response Object to Client
+        res.send(response);
 
     } catch (error) {
         if (error.response && error.response.status === 429) {
@@ -326,7 +326,7 @@ app.post('/analyze-song', async (req, res) => {
     const { analysis, relative, analysisModTempo, relativeModTempo } = req.body;
 
     console.log('Received POST request with data:', JSON.stringify(req.body, null, 2));
-    
+
     dataStorage.updateData(analysis, relative, analysisModTempo, relativeModTempo);
 
     res.json({
@@ -486,7 +486,7 @@ async function searchTrack(searchTerm) {
         const response = await axios.get(url, { headers: headers });
         const tracks = response.data.tracks.items;
         return tracks[0]; // returning the first track found
-    }  catch (error) {
+    } catch (error) {
         // Check for a rate limiting error response (HTTP 429)
         if (error.response && error.response.status === 429) {
             // Parse the Retry-After header (if present)
@@ -494,7 +494,7 @@ async function searchTrack(searchTerm) {
                 ? parseInt(error.response.headers['retry-after'], 10)
                 : 30; // Default to 30 seconds if header is not present
             console.error(`Rate limit exceeded, retrying after ${retryAfter} seconds.`);
-            
+
             // Simply log the error and rethrow it to be handled by the caller
             throw new Error(`Rate limit exceeded. Retry after ${retryAfter} seconds.`);
         } else {
@@ -524,7 +524,7 @@ async function getAudioFeatures(trackId) {
                 ? parseInt(error.response.headers['retry-after'], 10)
                 : 30; // Default to 30 seconds if header is not present
             console.error(`Rate limit exceeded, retrying after ${retryAfter} seconds.`);
-            
+
             // Log the error and rethrow it to be handled by the caller
             throw new Error(`Rate limit exceeded. Retry after ${retryAfter} seconds.`);
         } else {
@@ -548,7 +548,7 @@ async function getAudioFeaturesBatch(trackIds) {
         const audioFeaturesResponse = await limiter.schedule(() => axios.get(`https://api.spotify.com/v1/audio-features`, { headers: headers, params: params }));
 
         return audioFeaturesResponse.data.audio_features; // This will return the array of audio features objects
-    }  catch (error) {
+    } catch (error) {
         // Check for a rate limiting error response (HTTP 429)
         if (error.response && error.response.status === 429) {
             // Parse the Retry-After header (if present)
@@ -556,7 +556,7 @@ async function getAudioFeaturesBatch(trackIds) {
                 ? parseInt(error.response.headers['retry-after'], 10)
                 : 30; // Default to 30 seconds if header is not present
             console.error(`Rate limit exceeded, retrying after ${retryAfter} seconds.`);
-            
+
             // Log the error and rethrow it to be handled by the caller
             throw new Error(`Rate limit exceeded. Retry after ${retryAfter} seconds.`);
         } else {
@@ -591,21 +591,20 @@ function getRelativeScale(mode) {
 
 function modifyTempo(initialTempo) {
     let modifiedTempo;
-  
+
     if (initialTempo >= 100) {
         modifiedTempo = initialTempo / 2;
     } else {
         modifiedTempo = initialTempo * 2;
     }
     return modifiedTempo;
-  }
-  
+}
 
 
-  const PORT = process.env.port;
-  const HOST = process.env.host;
-  
-  app.listen(PORT, HOST, () => {
-      console.log(`Server is running on http://${HOST}:${PORT}`);
-  });
-  
+
+const PORT = process.env.port;
+const HOST = process.env.host;
+
+app.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
+});

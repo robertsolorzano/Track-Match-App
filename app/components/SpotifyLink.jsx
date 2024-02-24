@@ -1,4 +1,4 @@
-// SpotifyLink.js
+// SpotifyLink.jsx
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Linking } from 'react-native';
 
@@ -14,11 +14,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#1DB954',
     borderRadius: 20,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 15,
     overflow: 'hidden',
-    width: 200, 
-    alignSelf: 'center', 
+    width: 200,
+    alignSelf: 'center',
   },
   spotifyLinkText: {
     color: 'white',

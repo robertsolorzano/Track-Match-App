@@ -1,14 +1,14 @@
-// HomeScreen.js
+// HomeScreen.jsx
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to the Home Screen!</Text>
+      <Text style={styles.title}>Welcome to Track Match!</Text>
       <Button
-        title="Go to Main Screen"
-        onPress={() => navigation.navigate('MainScreen')}
+        title="Search Songs"
+        onPress={() => navigation.navigate('Root', { screen: 'Search' })}
       />
     </View>
   );

@@ -1,4 +1,4 @@
-// TrackDisplay.js
+// TrackDisplay.jsx
 import React from 'react';
 import { View } from 'react-native';
 import TrackElement from './TrackElement';
