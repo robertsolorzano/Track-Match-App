@@ -1,4 +1,3 @@
-// BottomTabNavigator.jsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
@@ -25,10 +24,29 @@ const BottomTabNavigator = () => {
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
+        headerShown: false, // Hide the header globally within the bottom tab navigator
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={MainScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '#403e44', // Set your preferred background color
+          },
+          headerTintColor: '403e44', // Set your preferred text color
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={MainScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: '403e44', // Set your preferred background color
+          },
+          headerTintColor: '403e44', // Set your preferred text color
+        }}
+      />
       {/* <Tab.Screen name="My Songs" component={MySongsScreen} /> */}
     </Tab.Navigator>
   );
