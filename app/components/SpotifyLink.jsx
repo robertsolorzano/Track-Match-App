@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     overflow: 'hidden',
-    width: 200, 
-    alignSelf: 'center', 
+    width: 200,
+    alignSelf: 'center',
   },
   spotifyLinkText: {
     color: 'white',
