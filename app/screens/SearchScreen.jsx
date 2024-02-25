@@ -4,7 +4,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar'; 
 import SearchResults from '../components/SearchResults'; 
 
-const MainScreen  = () => {
+const SearchScreen  = () => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState({
     analysisSongs: [],
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainScreen;
+export default SearchScreen;

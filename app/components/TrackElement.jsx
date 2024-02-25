@@ -18,7 +18,7 @@ const TrackElement = ({ track, audioFeatures }) => {
   return (
     <View style={styles.trackContainer}>
       {/* Left Section for Album Art */}
-      <View style={styles.leftSection}>
+      <View>
         <AlbumArt url={albumArtUrl} />
       </View>
 
@@ -45,7 +45,7 @@ const TrackElement = ({ track, audioFeatures }) => {
         </View>
 
         {/* Spotify Link */}
-        <View style={styles.spotifyLinkContainer}>
+        <View>
           <SpotifyLink url={spotifyUrl} />
         </View>
       </View>
@@ -74,11 +74,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: '#303030',
   },
-  leftSection: {
-    width: 60,
-    height: 60, 
-    marginRight: 10,
-  },
   middleSection: {
     justifyContent: 'center',
     flex: 1,
@@ -88,26 +83,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-  spotifyLinkContainer: {
-    marginLeft: 10,
-    marginRight: 10,
-  },
   keyTimeContainer: {
     justifyContent: 'center',
     alignItems: 'flex-end',
     alignSelf: 'center',
+    width: 70,
   },
   tempoDurationContainer: {
     justifyContent: 'center',
     alignItems: 'flex-end',
     alignSelf: 'center',
-    marginLeft: 10,
+    width: 70,
+    marginLeft: 20,
   },
   trackTitle: {
     fontSize: 13,
     fontWeight: 'bold',
     color: '#000000',
-    maxWidth: 120,
+    maxWidth: 100,
   },
   trackArtist: {
     fontSize: 12,
@@ -125,9 +118,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     alignSelf: 'center',
   },
-    previewContainer: {
-      marginTop: 10,
-      alignSelf: 'center',
-      width: 180, 
-    },
+    // previewContainer: {
+    //   marginTop: 10,
+    //   alignSelf: 'center',
+    //   width: 180, 
+    // },
 });

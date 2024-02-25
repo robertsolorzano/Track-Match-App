@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
-import MainScreen from '../screens/MainScreen';
+import SearchScreen from '../screens/SearchScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -42,7 +42,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Search"
-        component={MainScreen}
+        component={SearchScreen}
         options={{
           headerStyle: {
             backgroundColor: 'white', 

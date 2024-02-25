@@ -1,24 +1,24 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import the Icon component
+import Icon from 'react-native-vector-icons/FontAwesome'; 
 
 const SearchBar = ({ searchText, setSearchText, onSearch }) => {
   return (
     <View style={styles.searchContainer}>
       <TextInput
-        placeholder="Search for Artist & Song Title..."
+        placeholder="Search for Artist or Song..."
         value={searchText}
         onChangeText={setSearchText}
         style={styles.searchInput}
-        returnKeyType="search" // Set the return key to "search"
-        onSubmitEditing={onSearch} // Trigger search when the search (return) key is pressed
+        returnKeyType="search"
+        onSubmitEditing={onSearch} 
       />
       <Icon
         name="search"
         size={20}
-        color="#403e44"
+        color="#303030"
         style={styles.searchIcon}
-        onPress={onSearch} // Allow icon to be pressed to initiate search
+        onPress={onSearch} 
       />
     </View>
   );
@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 55,
-    marginBottom: 20,
+    marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#403e44',
+    borderColor: '#000000',
     borderRadius: 24,
     backgroundColor: '#fff',
     width: '95%',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     paddingLeft: 45,
     paddingRight: 45,
     fontSize: 16,
-    color: '#403e44',
+    color: '#303030',
   },
   searchIcon: {
     position: 'absolute',

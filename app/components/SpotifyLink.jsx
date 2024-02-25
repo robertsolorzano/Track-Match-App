@@ -15,7 +15,9 @@ export default SpotifyLink;
 
 const styles = StyleSheet.create({
   spotifyLogo: {
-    width: 30, 
-    height: 30, 
+    width: 32, 
+    height: 32, 
+    marginLeft: 25,
+    marginRight: 8,
   },
 });
