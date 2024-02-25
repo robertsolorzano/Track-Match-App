@@ -62,12 +62,13 @@ const MainScreen  = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#403e44',
+    backgroundColor: '#ffffff', 
   },
   resultTitle: {
-    color: '#fff',
+    color: '#000',
     fontSize: 18,
     marginBottom: 10,
   },
 });
+
 export default MainScreen;

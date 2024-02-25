@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#403e44',
+    backgroundColor: '#ffffff',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    color: '#fff',
+    color: '#000000',
     fontSize: 55,
   },
   logo: {

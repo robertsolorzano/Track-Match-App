@@ -24,7 +24,7 @@ const BottomTabNavigator = () => {
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false, // Hide the header globally within the bottom tab navigator
+        headerShown: false, 
       })}
     >
       <Tab.Screen
@@ -32,9 +32,9 @@ const BottomTabNavigator = () => {
         component={HomeScreen}
         options={{
           headerStyle: {
-            backgroundColor: '#403e44', // Set your preferred background color
+            backgroundColor: 'white',
           },
-          headerTintColor: '403e44', // Set your preferred text color
+          headerTintColor: 'gray', 
         }}
       />
       <Tab.Screen
@@ -42,9 +42,9 @@ const BottomTabNavigator = () => {
         component={MainScreen}
         options={{
           headerStyle: {
-            backgroundColor: '403e44', // Set your preferred background color
+            backgroundColor: 'white', // Set your preferred background color
           },
-          headerTintColor: '403e44', // Set your preferred text color
+          headerTintColor: 'gray', // Set your preferred text color
         }}
       />
       {/* <Tab.Screen name="My Songs" component={MySongsScreen} /> */}

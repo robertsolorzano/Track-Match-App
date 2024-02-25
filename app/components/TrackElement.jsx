@@ -6,7 +6,7 @@ import AlbumArt from './AlbumArt';
 import SpotifyLink from './SpotifyLink';
 import AudioPlayer from './AudioPlayer';
 
-const TrackElement = ({ track, audioFeatures, isRelative }) => {
+const TrackElement = ({ track, audioFeatures }) => {
   const mode = modeNumberToMusicalKey(audioFeatures.mode);
   const keyLetter = keyNumberToLetter(audioFeatures.key);
   const timeSignature = timeNumberToFraction(audioFeatures.time_signature);
@@ -17,46 +17,114 @@ const TrackElement = ({ track, audioFeatures, isRelative }) => {
 
   return (
     <View style={styles.trackContainer}>
-      <AlbumArt url={albumArtUrl} />
-      <Text style={styles.trackTitle}>{track.name}</Text>
-      {previewUrl && (
-        <View style={styles.previewContainer}>
-          <AudioPlayer previewUrl={previewUrl} />
+      {/* Left Section for Album Art */}
+      <View style={styles.leftSection}>
+        <AlbumArt url={albumArtUrl} />
+      </View>
+
+      {/* Middle Section for Title and Artist */}
+      <View style={styles.middleSection}>
+        <Text style={styles.trackTitle}>{track.name}</Text>
+        <Text style={styles.trackArtist}>{track.artists.map((artist) => artist.name).join(', ')}</Text>
+      </View>
+
+      {/* Right Section for Key, Time Signature, Tempo, Duration, and Spotify Link */}
+      <View style={styles.rightSection}>
+        {/* Key and Time Signature */}
+        <View style={styles.keyTimeContainer}>
+          <Text style={styles.trackKeyTime}>
+            {keyLetter} {mode}
+          </Text>
+          <Text style={styles.trackKeyTime}>{timeSignature}</Text>
         </View>
-      )}
-      <Text style={styles.trackInfo}>
-        {isRelative ? 'Relative' : 'Original'} Key: {keyLetter} {mode}
-      </Text>
-      <Text style={styles.trackInfo}>Tempo: {audioFeatures.tempo.toFixed(2)} BPM</Text>
-      <Text style={styles.trackInfo}>Time Signature: {timeSignature}</Text>
-      <Text style={styles.trackInfo}>Duration: {duration}</Text>
-      <View>
-        <SpotifyLink url={spotifyUrl} />
+
+        {/* Tempo and Duration */}
+        <View style={styles.tempoDurationContainer}>
+          <Text style={styles.trackTempoDuration}>{audioFeatures.tempo.toFixed(2)} BPM</Text>
+          <Text style={styles.trackTempoDuration}>{duration}</Text>
+        </View>
+
+        {/* Spotify Link */}
+        <View style={styles.spotifyLinkContainer}>
+          <SpotifyLink url={spotifyUrl} />
+        </View>
       </View>
     </View>
   );
 };
 
+      {/* <View>
+        <SpotifyLink url={spotifyUrl} />
+      </View> */}
+            {/* {previewUrl && (
+        <View style={styles.previewContainer}>
+          <AudioPlayer previewUrl={previewUrl} />
+        </View>
+      )} */}
+      // <AlbumArt url={albumArtUrl} style={styles.albumArt} />
+
+
 export default TrackElement;
 
 const styles = StyleSheet.create({
-    trackContainer: {
-      backgroundColor: '#ffffff',
-      padding: 10,
-      marginBottom: 40,
-      borderRadius: 15,
-      width: 250,
-      alignSelf: 'center',
-    },
-    trackTitle: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      alignSelf: 'center',
-    },
-    trackInfo: {
-      fontSize: 14,
-      alignSelf: 'center',
-    },
+  trackContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#303030',
+  },
+  leftSection: {
+    width: 60,
+    height: 60, 
+    marginRight: 10,
+  },
+  middleSection: {
+    justifyContent: 'center',
+    flex: 1,
+  },
+  rightSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  spotifyLinkContainer: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  keyTimeContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    alignSelf: 'center',
+  },
+  tempoDurationContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    alignSelf: 'center',
+    marginLeft: 10,
+  },
+  trackTitle: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#000000',
+    maxWidth: 120,
+  },
+  trackArtist: {
+    fontSize: 12,
+    color: '#000000',
+  },
+  trackKeyTime: {
+    fontSize: 12,
+    color: '#000000',
+    textAlign: 'right',
+    alignSelf: 'center',
+  },
+  trackTempoDuration: {
+    fontSize: 12,
+    color: '#000000',
+    textAlign: 'right',
+    alignSelf: 'center',
+  },
     previewContainer: {
       marginTop: 10,
       alignSelf: 'center',
