@@ -1,8 +1,8 @@
-// BottomTabNavigator.jsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
 import MainScreen from '../screens/MainScreen';
+import LibraryScreen from '../screens/LibraryScreen';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +18,8 @@ const BottomTabNavigator = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Search') {
             iconName = focused ? 'search' : 'search-outline';
+          } else if (route.name === 'Library') {
+            iconName = focused ? 'library' : 'library-outline';
           }
 
           // Return the icon component
@@ -25,11 +27,39 @@ const BottomTabNavigator = () => {
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
+        headerShown: false, 
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={MainScreen} />
-      {/* <Tab.Screen name="My Songs" component={MySongsScreen} /> */}
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerTintColor: 'gray', 
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={MainScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white', 
+          },
+          headerTintColor: 'gray', 
+        }}
+      />
+      <Tab.Screen
+        name="Library"
+        component={LibraryScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerTintColor: 'gray',
+        }}
+      />
     </Tab.Navigator>
   );
 };

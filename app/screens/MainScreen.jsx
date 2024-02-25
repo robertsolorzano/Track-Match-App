@@ -1,8 +1,8 @@
 // MainScreen.jsx
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import SearchBar from '../components/SearchBar'; // Corrected path
-import SearchResults from '../components/SearchResults'; // Corrected path
+import SearchBar from '../components/SearchBar'; 
+import SearchResults from '../components/SearchResults'; 
 
 const MainScreen  = () => {
   const [searchText, setSearchText] = useState('');
@@ -49,11 +49,6 @@ const MainScreen  = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>Track Match</Text>
-        <Image source={require('../assets/FullLogo_Transparent_NoBuffer.png')} style={styles.logo} />
-      </View>
-
       <SearchBar
         searchText={searchText}
         setSearchText={setSearchText}
@@ -67,29 +62,13 @@ const MainScreen  = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#403e44',
-    padding: 10,
-    paddingTop: 50, 
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  title: {
-    color: '#fff',
-    fontSize: 45,
-  },
-  logo: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
+    backgroundColor: '#ffffff', 
   },
   resultTitle: {
-    color: '#fff',
+    color: '#000',
     fontSize: 18,
     marginBottom: 10,
   },
 });
+
 export default MainScreen;

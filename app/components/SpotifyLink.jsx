@@ -1,29 +1,21 @@
 // SpotifyLink.jsx
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Linking } from 'react-native';
+import { TouchableOpacity, StyleSheet, Linking, Image } from 'react-native';
 
 const SpotifyLink = ({ url }) => (
-  <TouchableOpacity style={styles.button} onPress={() => Linking.openURL(url)}>
-    <Text style={styles.spotifyLinkText}>Listen on Spotify</Text>
+  <TouchableOpacity onPress={() => Linking.openURL(url)}>
+    <Image
+      style={styles.spotifyLogo}
+      source={require('../assets/spotify-logo-png-7057.png')} 
+    />
   </TouchableOpacity>
 );
 
 export default SpotifyLink;
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: '#1DB954',
-    borderRadius: 20,
-    marginTop: 15,
-    marginBottom: 15,
-    overflow: 'hidden',
-    width: 200,
-    alignSelf: 'center',
-  },
-  spotifyLinkText: {
-    color: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    textAlign: 'center',
+  spotifyLogo: {
+    width: 30, 
+    height: 30, 
   },
 });
