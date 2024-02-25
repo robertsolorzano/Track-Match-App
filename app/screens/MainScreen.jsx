@@ -1,8 +1,8 @@
 // MainScreen.jsx
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import SearchBar from '../components/SearchBar'; // Corrected path
-import SearchResults from '../components/SearchResults'; // Corrected path
+import SearchBar from '../components/SearchBar'; 
+import SearchResults from '../components/SearchResults'; 
 
 const MainScreen  = () => {
   const [searchText, setSearchText] = useState('');

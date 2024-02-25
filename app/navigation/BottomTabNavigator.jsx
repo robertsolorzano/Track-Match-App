@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
 import MainScreen from '../screens/MainScreen';
+import LibraryScreen from '../screens/LibraryScreen';
 import { Ionicons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
@@ -17,6 +18,8 @@ const BottomTabNavigator = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Search') {
             iconName = focused ? 'search' : 'search-outline';
+          } else if (route.name === 'Library') {
+            iconName = focused ? 'library' : 'library-outline';
           }
 
           // Return the icon component
@@ -42,12 +45,21 @@ const BottomTabNavigator = () => {
         component={MainScreen}
         options={{
           headerStyle: {
-            backgroundColor: 'white', // Set your preferred background color
+            backgroundColor: 'white', 
           },
-          headerTintColor: 'gray', // Set your preferred text color
+          headerTintColor: 'gray', 
         }}
       />
-      {/* <Tab.Screen name="My Songs" component={MySongsScreen} /> */}
+      <Tab.Screen
+        name="Library"
+        component={LibraryScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerTintColor: 'gray',
+        }}
+      />
     </Tab.Navigator>
   );
 };

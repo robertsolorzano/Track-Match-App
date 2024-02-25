@@ -6,7 +6,7 @@ const SpotifyLink = ({ url }) => (
   <TouchableOpacity onPress={() => Linking.openURL(url)}>
     <Image
       style={styles.spotifyLogo}
-      source={require('../assets/spotify-logo-png-7057.png')} // Make sure the path is correct
+      source={require('../assets/spotify-logo-png-7057.png')} 
     />
   </TouchableOpacity>
 );
