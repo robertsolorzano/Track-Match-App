@@ -10,7 +10,7 @@ const LoudnessBar = ({ loudness, animate }) => {
   const animatedHeight = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (animate) { // Only start the animation if the 'animate' prop is true
+    if (animate) { 
       const targetHeight = ((loudness - minLoudnessDb) / (maxLoudnessDb - minLoudnessDb)) * 100;
       Animated.timing(animatedHeight, {
         toValue: targetHeight,
@@ -18,7 +18,7 @@ const LoudnessBar = ({ loudness, animate }) => {
         useNativeDriver: false,
       }).start();
     }
-  }, [loudness, animate]); // Depend on 'animate' prop as well
+  }, [loudness, animate]); 
 
   return (
     <View style={styles.container}>
@@ -35,12 +35,12 @@ const LoudnessBar = ({ loudness, animate }) => {
             x="0"
             y={animatedHeight.interpolate({
               inputRange: [0, 100],
-              outputRange: ['150', '0'] // Adjust for animation direction
+              outputRange: ['150', '0']
             })}
             width="30"
             height={animatedHeight.interpolate({
               inputRange: [0, 100],
-              outputRange: ['0', '150'] // Adjust for animated height
+              outputRange: ['0', '150']
             })}
             fill="url(#barGradient)"
           />
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   barContainer: {
-    width: 40, // Adjusted for visibility
-    height: 180, // Make sure this matches your design needs
+    width: 40, 
+    height: 180, 
     backgroundColor: '#ddd',
     borderRadius: 5,
     overflow: 'hidden',

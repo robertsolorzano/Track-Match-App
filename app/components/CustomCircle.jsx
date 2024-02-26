@@ -46,7 +46,7 @@ const CustomCircle = ({ title, value }) => {
       cy={size / 2}
       r={radius}
       fill="none"
-      stroke="url(#grad)" // Referencing the gradient ID here
+      stroke="url(#grad)" 
       strokeWidth={strokeWidth}
       strokeDasharray={`${circumference} ${circumference}`}
       strokeDashoffset={strokeDashoffset}

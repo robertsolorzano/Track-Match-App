@@ -13,7 +13,6 @@ const TrackElement = ({ track, audioFeatures }) => {
   const duration = msToTime(audioFeatures.duration_ms);
   const albumArtUrl = track.album.images[0].url;
   const spotifyUrl = track.external_urls.spotify;
-  //const previewUrl = track.preview_url;
 
   const navigation = useNavigation(); 
 
