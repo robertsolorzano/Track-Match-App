@@ -1,14 +1,10 @@
-// SongInfoScreen.jsx
 import React from 'react';
-import { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Swiper from 'react-native-swiper'; 
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import CustomCircle from '../components/CustomCircle';
 import AudioPlayer from '../components/AudioPlayer';
-import LoudnessBar from '../components/LoudnessBar';
 
 
 const SongInfoScreen = ({ route }) => {
@@ -21,12 +17,6 @@ const SongInfoScreen = ({ route }) => {
     const tempo = audioFeatures.tempo.toFixed(2);
     const duration = msToTime(audioFeatures.duration_ms);
     const previewUrl = track.preview_url;
-
-    const [swiperIndex, setSwiperIndex] = useState(0);
-    
-
-
-
 
     return (
         <ScrollView style={{ flex: 1 }}>
@@ -82,59 +72,22 @@ const SongInfoScreen = ({ route }) => {
                         <Text style={styles.featureValue}>{duration}</Text>
                     </View>
                 </View>
+
+                {/* Audio Features Circle */}
+                <View style={styles.audioFeaturesCircle}>
+                    <CustomCircle title="Energy" value={audioFeatures.energy} />
+                    <CustomCircle title="Danceability" value={audioFeatures.danceability} />
+                    <CustomCircle title="Instrumentalness" value={audioFeatures.instrumentalness} />
+                    <CustomCircle title="Liveness" value={audioFeatures.liveness} />
+                    <CustomCircle title="Acousticness" value={audioFeatures.acousticness} />
+                    <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
+                </View>
             </View>
-
-            {/* Swiper for Audio Features and Loudness Bar */}
-            <Swiper
-                style={styles.swiper}
-                showsButtons={false}
-                loop={false}
-                showsPagination={true}
-                paginationStyle={styles.pagination}
-                activeDotColor="#000000"
-                onIndexChanged={(index) => setSwiperIndex(index)} // Update the index state
-            >
-                {/* First Slide: Audio Features */}
-                <View style={styles.slide}>
-
-                        <View style={styles.audioFeaturesCircle}>
-                            <CustomCircle title="Energy" value={audioFeatures.energy} />
-                            <CustomCircle title="Danceability" value={audioFeatures.danceability} />
-                            <CustomCircle title="Instrumentalness" value={audioFeatures.instrumentalness} />
-                            <CustomCircle title="Liveness" value={audioFeatures.liveness} />
-                            <CustomCircle title="Acousticness" value={audioFeatures.acousticness} />
-                            <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
-                        </View>
-                </View>
-
-                {/* Second Slide: Loudness Bar */}
-                <View style={styles.slide}>
-                    <LoudnessBar loudness={audioFeatures.loudness} animate={swiperIndex === 1} />
-                </View>
-
-            </Swiper>
-
         </ScrollView>
-
     );
 };
 
-
-
 const styles = StyleSheet.create({
-    swiper: {
-        height: 500, 
-        backgroundColor: '#ffffff', 
-    },
-    pagination: {
-        bottom: 0, 
-    },
-    slide: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: 50, 
-    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -189,6 +142,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '90%',
+        marginTop: 8,
     },
     featureContainer: {
         backgroundColor: 'white',
@@ -213,10 +167,9 @@ const styles = StyleSheet.create({
     },
     featureValue: {
         fontSize: 14,
-        color: '#313131',
+        color: '#FF4801',
         textAlign: 'center',
     },
 });
-
 
 export default SongInfoScreen;

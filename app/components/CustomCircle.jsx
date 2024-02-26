@@ -50,8 +50,8 @@ const CustomCircle = ({ title, value }) => {
       <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <Defs>
           <LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <Stop offset="0%" stopColor="#00a5ff" />
-            <Stop offset="100%" stopColor="#00d5ff" />
+            <Stop offset="0%" stopColor="#FF6C34" />
+            <Stop offset="100%" stopColor="#FF4801" />
           </LinearGradient>
         </Defs>
         <Circle

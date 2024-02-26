@@ -1,3 +1,4 @@
+// LoudnessBar.jsx might use later
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { Svg, Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
@@ -27,8 +28,8 @@ const LoudnessBar = ({ loudness, animate }) => {
         <Svg height="100%" width="100%" viewBox="0 0 30 150" preserveAspectRatio="none">
           <Defs>
             <LinearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-              <Stop offset="0%" stopColor="#00a5ff" />
-              <Stop offset="100%" stopColor="#00d5ff" />
+              <Stop offset="0%" stopColor="#FF6C34" />
+              <Stop offset="100%" stopColor="#FF4801" />
             </LinearGradient>
           </Defs>
           <AnimatedRect
