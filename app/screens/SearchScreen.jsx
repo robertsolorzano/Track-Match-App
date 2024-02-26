@@ -1,4 +1,4 @@
-// MainScreen.jsx
+// SearchScreen.jsx
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar'; 

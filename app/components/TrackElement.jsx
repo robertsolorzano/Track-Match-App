@@ -1,10 +1,11 @@
 // TrackElement.jsx
 import React from 'react';
-import { View, Text, StyleSheet} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import AlbumArt from './AlbumArt';
 import SpotifyLink from './SpotifyLink';
-import AudioPlayer from './AudioPlayer';
+//import AudioPlayer from './AudioPlayer';
 
 const TrackElement = ({ track, audioFeatures }) => {
   const mode = modeNumberToMusicalKey(audioFeatures.mode);
@@ -13,19 +14,27 @@ const TrackElement = ({ track, audioFeatures }) => {
   const duration = msToTime(audioFeatures.duration_ms);
   const albumArtUrl = track.album.images[0].url;
   const spotifyUrl = track.external_urls.spotify;
-  const previewUrl = track.preview_url;
+  //const previewUrl = track.preview_url;
+
+  const navigation = useNavigation(); 
+
+  const handleAlbumArtPress = () => {
+    navigation.navigate('SongInfoScreen', { track: track, audioFeatures: audioFeatures });
+  };
 
   return (
     <View style={styles.trackContainer}>
       {/* Left Section for Album Art */}
       <View>
-        <AlbumArt url={albumArtUrl} />
+        <TouchableOpacity onPress={handleAlbumArtPress}>
+          <AlbumArt url={albumArtUrl} />
+        </TouchableOpacity>
       </View>
 
       {/* Middle Section for Title and Artist */}
       <View style={styles.middleSection}>
-        <Text style={styles.trackTitle}>{track.name}</Text>
-        <Text style={styles.trackArtist}>{track.artists.map((artist) => artist.name).join(', ')}</Text>
+        <Text style={styles.trackTitle} numberOfLines={3}>{track.name}</Text>
+        <Text style={styles.trackArtist} numberOfLines={2}>{track.artists.map((artist) => artist.name).join(', ')}</Text>
       </View>
 
       {/* Right Section for Key, Time Signature, Tempo, Duration, and Spotify Link */}
@@ -53,15 +62,12 @@ const TrackElement = ({ track, audioFeatures }) => {
   );
 };
 
-      {/* <View>
-        <SpotifyLink url={spotifyUrl} />
-      </View> */}
-            {/* {previewUrl && (
+
+{/* {previewUrl && (
         <View style={styles.previewContainer}>
           <AudioPlayer previewUrl={previewUrl} />
         </View>
       )} */}
-      // <AlbumArt url={albumArtUrl} style={styles.albumArt} />
 
 
 export default TrackElement;
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
   trackContainer: {
     flexDirection: 'row',
     backgroundColor: '#ffffff',
-    padding: 10,
+    padding: 8,
     borderBottomWidth: 0.5,
     borderBottomColor: '#303030',
   },
@@ -94,17 +100,22 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     alignSelf: 'center',
     width: 70,
-    marginLeft: 20,
   },
   trackTitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#000000',
-    maxWidth: 100,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    color: '#000000',
+    maxWidth: 90,
   },
   trackArtist: {
     fontSize: 12,
     color: '#000000',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: 90,
   },
   trackKeyTime: {
     fontSize: 12,
@@ -118,9 +129,9 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     alignSelf: 'center',
   },
-    // previewContainer: {
-    //   marginTop: 10,
-    //   alignSelf: 'center',
-    //   width: 180, 
-    // },
+  // previewContainer: {
+  //   marginTop: 10,
+  //   alignSelf: 'center',
+  //   width: 180, 
+  // },
 });

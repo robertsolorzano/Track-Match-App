@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   spotifyLogo: {
     width: 32, 
     height: 32, 
-    marginLeft: 25,
+    marginLeft: 18,
     marginRight: 8,
   },
 });
