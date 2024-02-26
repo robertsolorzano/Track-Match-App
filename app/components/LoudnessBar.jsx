@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
   },
   barContainer: {
     width: 40, 
-    height: 180, 
+    height: 140, 
     backgroundColor: '#ddd',
     borderRadius: 5,
     overflow: 'hidden',
   },
   loudnessLabel: {
-    fontWeight: 'bold',
-    fontSize: 22,
+    fontWeight: 'medium',
+    fontSize: 20,
     marginRight: 20,
   },
   loudnessValue: {

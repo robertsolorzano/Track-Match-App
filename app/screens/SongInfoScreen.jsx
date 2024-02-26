@@ -23,6 +23,7 @@ const SongInfoScreen = ({ route }) => {
     const previewUrl = track.preview_url;
 
     const [swiperIndex, setSwiperIndex] = useState(0);
+    
 
 
 
@@ -95,7 +96,6 @@ const SongInfoScreen = ({ route }) => {
             >
                 {/* First Slide: Audio Features */}
                 <View style={styles.slide}>
-                    <View style={styles.audioFeaturesGrid}>
 
                         <View style={styles.audioFeaturesCircle}>
                             <CustomCircle title="Energy" value={audioFeatures.energy} />
@@ -105,7 +105,6 @@ const SongInfoScreen = ({ route }) => {
                             <CustomCircle title="Acousticness" value={audioFeatures.acousticness} />
                             <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
                         </View>
-                    </View>
                 </View>
 
                 {/* Second Slide: Loudness Bar */}
@@ -124,7 +123,7 @@ const SongInfoScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
     swiper: {
-        height: 330, 
+        height: 500, 
         backgroundColor: '#ffffff', 
     },
     pagination: {
@@ -152,12 +151,12 @@ const styles = StyleSheet.create({
         height: 280,
         borderRadius: 4,
         resizeMode: 'contain',
-        marginTop: 20,
+        marginTop: 0,
     },
     trackInfoContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 10,
     },
     trackDetails: {
         marginRight: 40,
@@ -165,15 +164,14 @@ const styles = StyleSheet.create({
     trackTitle: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginTop: 20,
         textAlign: 'center',
         alignSelf: 'center',
         maxWidth: 200,
     },
     artistName: {
         fontSize: 18,
-        color: 'gray',
-        marginTop: 10,
+        color: '#313131',
+        marginTop: 5,
         textAlign: 'center',
         alignSelf: 'center',
         maxWidth: 200,
@@ -183,6 +181,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         marginTop: 20,
+        width: '90%',
+    },
+    audioFeaturesCircle: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         width: '90%',
     },
     featureContainer: {
@@ -208,15 +213,8 @@ const styles = StyleSheet.create({
     },
     featureValue: {
         fontSize: 14,
-        color: 'gray',
+        color: '#313131',
         textAlign: 'center',
-    },
-    audioFeaturesCircle: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        marginTop: 5,
     },
 });
 
