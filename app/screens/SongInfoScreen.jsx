@@ -124,17 +124,17 @@ const SongInfoScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
     swiper: {
-        height: 330, // Adjust the height as needed
-        backgroundColor: '#ffffff', // Set the background color for the swiper container
+        height: 330, 
+        backgroundColor: '#ffffff', 
     },
     pagination: {
-        bottom: 0, // Adjust pagination dot position
+        bottom: 0, 
     },
     slide: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 50, // Add padding at the bottom of each slide
+        paddingBottom: 50, 
     },
     container: {
         flex: 1,
