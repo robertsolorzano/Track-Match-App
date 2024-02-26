@@ -1,89 +1,92 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+// SongInfoScreen.jsx
+import React, { useState } from 'react';
+import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
-import CustomCircle from '../components/CustomCircle';
+import CustomHeader from '../components/CustomHeader';
+import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
-
+import CustomCircle from '../components/CustomCircle';
+import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 
 const SongInfoScreen = ({ route }) => {
     const { track, audioFeatures } = route.params;
     const navigation = useNavigation();
+    const [isDropdownVisible, setDropdownVisible] = useState(false);
 
-    // Using utility functions for conversions
     const key = `${keyNumberToLetter(audioFeatures.key)} ${modeNumberToMusicalKey(audioFeatures.mode)}`;
     const timeSignature = timeNumberToFraction(audioFeatures.time_signature);
     const tempo = audioFeatures.tempo.toFixed(2);
     const duration = msToTime(audioFeatures.duration_ms);
     const previewUrl = track.preview_url;
 
+    const handleOptionsPress = () => {
+        setDropdownVisible(true);
+    };
+
+    const handleSaveSong = () => {
+        // Implement the save functionality here
+        setDropdownVisible(false);
+        console.log('Song saved!');
+    };
+
     return (
-        <ScrollView style={{ flex: 1 }}>
-            <View style={styles.container}>
-                {/* Custom Back Button */}
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Ionicons name="chevron-back" size={30} color="black" />
-                </TouchableOpacity>
+        <View style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <CustomHeader onOptionsPress={handleOptionsPress} />
 
-                {/* Album Art */}
-                <Image
-                    source={{ uri: track.album.images[0].url }}
-                    style={styles.albumArt}
-                />
-                {/* Track Info and Audio Player Container */}
-                <View style={styles.trackInfoContainer}>
-                    <View style={styles.trackDetails}>
-                        {/* Track Title */}
-                        <Text style={styles.trackTitle}>{track.name}</Text>
+                    <Image
+                        source={{ uri: track.album.images[0].url }}
+                        style={styles.albumArt}
+                    />
 
-                        {/* Artist Name */}
-                        <Text style={styles.artistName}>{track.artists.map((artist) => artist.name).join(', ')}</Text>
+                    <View style={styles.trackInfoContainer}>
+                        <View style={styles.trackDetails}>
+                            <Text style={styles.trackTitle}>{track.name}</Text>
+                            <Text style={styles.artistName}>{track.artists.map((artist) => artist.name).join(', ')}</Text>
+                        </View>
+
+                        <AudioPlayer previewUrl={previewUrl} />
                     </View>
 
-                    {/* Audio Player */}
-                    <AudioPlayer previewUrl={previewUrl} />
+                    <View style={styles.audioFeaturesGrid}>
+                        <View style={styles.featureContainer}>
+                            <Text style={styles.featureTitle}>Key</Text>
+                            <Text style={styles.featureValue}>{key}</Text>
+                        </View>
 
-                </View>
-                
-                {/* Audio Features Grid */}
-                <View style={styles.audioFeaturesGrid}>
-                    {/* Key */}
-                    <View style={styles.featureContainer}>
-                        <Text style={styles.featureTitle}>Key</Text>
-                        <Text style={styles.featureValue}>{key}</Text>
+                        <View style={styles.featureContainer}>
+                            <Text style={styles.featureTitle}>Time Signature</Text>
+                            <Text style={styles.featureValue}>{timeSignature}</Text>
+                        </View>
+
+                        <View style={styles.featureContainer}>
+                            <Text style={styles.featureTitle}>Tempo</Text>
+                            <Text style={styles.featureValue}>{tempo} BPM</Text>
+                        </View>
+
+                        <View style={styles.featureContainer}>
+                            <Text style={styles.featureTitle}>Duration</Text>
+                            <Text style={styles.featureValue}>{duration}</Text>
+                        </View>
                     </View>
 
-                    {/* Time Signature */}
-                    <View style={styles.featureContainer}>
-                        <Text style={styles.featureTitle}>Time Signature</Text>
-                        <Text style={styles.featureValue}>{timeSignature}</Text>
-                    </View>
-
-                    {/* Tempo */}
-                    <View style={styles.featureContainer}>
-                        <Text style={styles.featureTitle}>Tempo</Text>
-                        <Text style={styles.featureValue}>{tempo} BPM</Text>
-                    </View>
-
-                    {/* Duration */}
-                    <View style={styles.featureContainer}>
-                        <Text style={styles.featureTitle}>Duration</Text>
-                        <Text style={styles.featureValue}>{duration}</Text>
+                    <View style={styles.audioFeaturesCircle}>
+                        <CustomCircle title="Energy" value={audioFeatures.energy} />
+                        <CustomCircle title="Danceability" value={audioFeatures.danceability} />
+                        <CustomCircle title="Instrumentalness" value={audioFeatures.instrumentalness} />
+                        <CustomCircle title="Liveness" value={audioFeatures.liveness} />
+                        <CustomCircle title="Acousticness" value={audioFeatures.acousticness} />
+                        <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
                     </View>
                 </View>
-
-                {/* Audio Features Circle */}
-                <View style={styles.audioFeaturesCircle}>
-                    <CustomCircle title="Energy" value={audioFeatures.energy} />
-                    <CustomCircle title="Danceability" value={audioFeatures.danceability} />
-                    <CustomCircle title="Instrumentalness" value={audioFeatures.instrumentalness} />
-                    <CustomCircle title="Liveness" value={audioFeatures.liveness} />
-                    <CustomCircle title="Acousticness" value={audioFeatures.acousticness} />
-                    <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
-                </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+            <DropdownMenu
+                isVisible={isDropdownVisible}
+                onClose={() => setDropdownVisible(false)}
+                onSave={handleSaveSong}
+            />
+        </View>
     );
 };
 
