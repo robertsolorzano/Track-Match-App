@@ -6,7 +6,6 @@ import TrackDisplay from './TrackDisplay'; // Adjust the import path as necessar
 const SearchResults = ({ results }) => {
   return (
     <ScrollView>
-      {/* Assuming TrackDisplay is designed to take the entire results object */}
       <TrackDisplay data={results} />
     </ScrollView>
   );
