@@ -1,52 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+// AudioPlayer.jsx
+import React, { useState, useEffect, useRef } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
 import { Audio } from 'expo-av';
 import { MaterialIcons } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
 
-let currentSound = null; // Global variable to track the current sound object
+let currentSound = null;
 
 const AudioPlayer = ({ previewUrl }) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [duration, setDuration] = useState(0);
+    const [showFeedback, setShowFeedback] = useState(false);
+    const iconColor = previewUrl ? "#000000" : "#A9A9A9";
+    const shakeAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         return () => {
-            // Ensure the sound is unloaded when the component unmounts
             if (currentSound) {
                 currentSound.unloadAsync();
+                currentSound = null;
             }
         };
-    }, []);
+    }, [previewUrl]);
+
+    const triggerShake = () => {
+        Animated.sequence([
+            Animated.timing(shakeAnim, { toValue: 8, duration: 100, useNativeDriver: true }),
+            Animated.timing(shakeAnim, { toValue: -8, duration: 100, useNativeDriver: true }),
+            Animated.timing(shakeAnim, { toValue: 8, duration: 100, useNativeDriver: true }),
+            Animated.timing(shakeAnim, { toValue: 0, duration: 100, useNativeDriver: true })
+        ]).start();
+    };
+
 
     const togglePlayback = async () => {
+        if (!previewUrl) {
+            triggerShake(); // Trigger shake animation
+            return; // Early return if there's no preview URL
+        }
+
         if (currentSound) {
             await currentSound.unloadAsync();
             currentSound = null;
             setIsPlaying(false);
-        }
-
-        if (!isPlaying) {
-            const { sound, status } = await Audio.Sound.createAsync(
+        } else {
+            const { sound } = await Audio.Sound.createAsync(
                 { uri: previewUrl },
-                { shouldPlay: true }
+                { shouldPlay: true },
+                updateStatus
             );
             currentSound = sound;
             setIsPlaying(true);
-            setDuration(status.durationMillis);
+
             sound.setOnPlaybackStatusUpdate(updateStatus);
-        } else if (isPlaying && currentSound) {
-            await currentSound.pauseAsync();
-            setIsPlaying(false);
         }
     };
 
     const updateStatus = (status) => {
-        setProgress(status.positionMillis);
         if (status.didJustFinish) {
             setIsPlaying(false);
-            setProgress(0);
             if (currentSound) {
                 currentSound.unloadAsync();
                 currentSound = null;
@@ -56,32 +66,40 @@ const AudioPlayer = ({ previewUrl }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={togglePlayback}>
-                <MaterialIcons name={isPlaying ? 'pause' : 'play-arrow'} size={24} color="black" />
+            <TouchableOpacity onPress={togglePlayback} style={styles.iconContainer}>
+                <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
+                    <MaterialIcons name={isPlaying ? 'pause' : 'play-arrow'} size={40} color={iconColor} />
+                </Animated.View>
             </TouchableOpacity>
-            <Slider
-                style={styles.slider}
-                minimumValue={0}
-                maximumValue={duration}
-                value={progress}
-                onValueChange={async (value) => {
-                    if (currentSound) {
-                        await currentSound.setPositionAsync(value);
-                    }
-                }}
-            />
         </View>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative', 
     },
-    slider: {
-        flex: 1,
-        marginLeft: 10,
+    iconContainer: {
+        borderRadius: 20,
+        padding: 10,
+        backgroundColor: 'white',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    feedbackContainer: {
+        position: 'absolute',
+        top: -35,
+        left: 0,
+        right: 0, 
+    },
+    feedbackText: {
+        color: 'red',
+        fontSize: 10,
+        textAlign: 'center',
     },
 });
 

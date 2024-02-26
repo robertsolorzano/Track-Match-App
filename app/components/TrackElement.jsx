@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import AlbumArt from './AlbumArt';
 import SpotifyLink from './SpotifyLink';
-//import AudioPlayer from './AudioPlayer';
 
 const TrackElement = ({ track, audioFeatures }) => {
   const mode = modeNumberToMusicalKey(audioFeatures.mode);
@@ -63,13 +62,6 @@ const TrackElement = ({ track, audioFeatures }) => {
 };
 
 
-{/* {previewUrl && (
-        <View style={styles.previewContainer}>
-          <AudioPlayer previewUrl={previewUrl} />
-        </View>
-      )} */}
-
-
 export default TrackElement;
 
 const styles = StyleSheet.create({
@@ -106,7 +98,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000000',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
     color: '#000000',
     maxWidth: 90,
   },
@@ -114,7 +105,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#000000',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
     maxWidth: 90,
   },
   trackKeyTime: {
@@ -129,9 +119,4 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     alignSelf: 'center',
   },
-  // previewContainer: {
-  //   marginTop: 10,
-  //   alignSelf: 'center',
-  //   width: 180, 
-  // },
 });
