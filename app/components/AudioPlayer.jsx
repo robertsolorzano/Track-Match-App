@@ -8,7 +8,6 @@ let currentSound = null;
 
 const AudioPlayer = ({ previewUrl }) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [showFeedback, setShowFeedback] = useState(false);
     const iconColor = previewUrl ? "#000000" : "#A9A9A9";
     const shakeAnim = useRef(new Animated.Value(0)).current;
 
