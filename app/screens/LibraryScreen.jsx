@@ -4,15 +4,16 @@ import { View, FlatList, StyleSheet, RefreshControl } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import TrackElement from '../components/TrackElement';
 import LibrarySearchBar from '../components/LibrarySearchBar';
-import { useNavigation } from '@react-navigation/native';
 
-const LibraryScreen = () => {
-  const [likedSongs, setLikedSongs] = useState([]);
+const LibraryScreen = ({ route }) => {
+  const { folderSongs } = route.params || { folderSongs: [] };
   const [refreshing, setRefreshing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State for the search query
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    loadSongs();
+    if (folderSongs.length === 0) {
+      loadSongs();
+    }
   }, []);
 
   const loadSongs = () => {
@@ -37,7 +38,7 @@ const LibraryScreen = () => {
   };
 
   // Filter songs based on search query
-  const filteredSongs = likedSongs.filter(song =>
+  const filteredSongs = folderSongs.filter(song =>
     song.track.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     song.track.artists.join('').toLowerCase().includes(searchQuery.toLowerCase()) 
   );
