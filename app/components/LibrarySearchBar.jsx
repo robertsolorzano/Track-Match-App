@@ -1,83 +1,61 @@
-// SearchBar.jsx
-import React, { useState, useRef } from 'react';
+// LibrarySearchBar.jsx
+import React, {useRef } from 'react';
 import { View, TextInput, Animated, StyleSheet, TouchableOpacity, Text, Keyboard } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const SearchBar = ({ searchText, setSearchText, onSearch }) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const animatedWidth = useRef(new Animated.Value(0)).current; 
+const LocalSearchBar = ({ searchText, setSearchText }) => {
+  const animatedWidth = useRef(new Animated.Value(0)).current;
 
-  // Function to handle the focus event
+  // Adjust the focus and cancel logic as needed for your local filtering
   const handleFocus = () => {
-    setIsFocused(true);
     Animated.timing(animatedWidth, {
       toValue: 1,
       duration: 300,
-      useNativeDriver: false
+      useNativeDriver: false,
     }).start();
   };
 
-  // Function to handle the cancel button press
   const handleCancel = () => {
-    setIsFocused(false);
-    setSearchText(''); // Clear the search input
+    setSearchText('');
     Keyboard.dismiss();
     Animated.timing(animatedWidth, {
       toValue: 0,
       duration: 300,
-      useNativeDriver: false
+      useNativeDriver: false,
     }).start();
   };
 
-  // Function to clear the input
-  const clearInput = () => {
-    setSearchText('');
-  };
+  const clearInput = () => setSearchText('');
 
-  // The interpolated width for the search bar
   const searchBarWidth = animatedWidth.interpolate({
     inputRange: [0, 1],
-    outputRange: ['96%', '80%'] 
+    outputRange: ['96%', '80%'],
   });
 
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.searchContainer, { width: searchBarWidth }]}>
-        <Icon
-          name="search"
-          size={20}
-          color="#303030"
-          style={styles.searchIcon}
-        />
+        <Icon name="search" size={20} color="#303030" style={styles.searchIcon} />
         <TextInput
           placeholder="Search for Artist or Song..."
           value={searchText}
           onChangeText={setSearchText}
           style={styles.searchInput}
-          returnKeyType="search"
           onFocus={handleFocus}
-          onSubmitEditing={onSearch}
         />
         {searchText.length > 0 && (
           <TouchableOpacity onPress={clearInput} style={styles.clearIconContainer}>
-            <Icon
-              name="times-circle"
-              size={18}
-              color="#303030"
-            />
+            <Icon name="times-circle" size={18} color="#303030" />
           </TouchableOpacity>
         )}
       </Animated.View>
-      {isFocused && (
-        <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
-          <Text style={styles.cancelText}>Cancel</Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
+        <Text style={styles.cancelText}>Cancel</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default SearchBar;
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +65,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 5,
     paddingRight: 5,
-    marginTop: 48,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -114,9 +91,11 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     padding: 10,
-    marginLeft: 5,
+    marginLeft: 15,
   },
   cancelText: {
     fontWeight: 'bold',
-  }
+  },
 });
+
+export default LocalSearchBar;

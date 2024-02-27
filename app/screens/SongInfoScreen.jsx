@@ -1,18 +1,17 @@
 // SongInfoScreen.jsx
 import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import CustomHeader from '../components/CustomHeader';
 import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
 import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
+import db from '../../firebaseConfig'; 
+import { ref, push } from 'firebase/database';
 
 const SongInfoScreen = ({ route }) => {
     const { track, audioFeatures } = route.params;
-    const navigation = useNavigation();
     const [isDropdownVisible, setDropdownVisible] = useState(false);
-
     const key = `${keyNumberToLetter(audioFeatures.key)} ${modeNumberToMusicalKey(audioFeatures.mode)}`;
     const timeSignature = timeNumberToFraction(audioFeatures.time_signature);
     const tempo = audioFeatures.tempo.toFixed(2);
@@ -23,10 +22,21 @@ const SongInfoScreen = ({ route }) => {
         setDropdownVisible(true);
     };
 
-    const handleSaveSong = () => {
-        // Implement the save functionality here
+    const handleSaveSong = async () => {
+        try {
+            // Create a reference to the 'savedSongs' collection
+            const savedSongsRef = ref(db, 'savedSongs');
+    
+            // Push the song data to the "savedSongs" collection
+            await push(savedSongsRef, {
+                track,
+                audioFeatures
+            });
+            console.log('Song saved to Firebase:', { track, audioFeatures });
+        } catch (error) {
+            console.error('Error saving song: ', error);
+        }
         setDropdownVisible(false);
-        console.log('Song saved!');
     };
 
     return (
