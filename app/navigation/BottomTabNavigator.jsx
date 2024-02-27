@@ -58,7 +58,7 @@ const BottomTabNavigator = () => {
     headerRight: () => (
       <View style={styles.headerRight}>
         <TouchableOpacity onPress={() => console.log('Settings pressed!')} style={styles.iconButton}>
-          <Ionicons name="settings" size={24} color="grey" />
+          <Ionicons name="settings-outline" size={24} color="grey" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => console.log('Logo pressed!')} style={styles.LogoButton}>
           {/* Replace the image with a circular icon */}
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginRight: 0,
   },
   iconButton: {
-    marginRight: 20,
+    marginRight: 10,
     alignSelf: 'center',
 
   },

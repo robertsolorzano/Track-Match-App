@@ -50,6 +50,7 @@ const SearchScreen  = () => {
   return (
     <View style={styles.container}>
       <SearchBar
+        style={styles.searchBar}
         searchText={searchText}
         setSearchText={setSearchText}
         onSearch={handleSearch}
