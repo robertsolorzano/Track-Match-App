@@ -1,6 +1,6 @@
 // SearchScreen.jsx
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar'; 
 import SearchResults from '../components/SearchResults'; 
 

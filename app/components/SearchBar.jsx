@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: '#fff',
     height: 40,
-    paddingLeft: 10, // to align the search icon
+    paddingLeft: 10,
+    left: 6,
   },
   searchInput: {
     flex: 1,

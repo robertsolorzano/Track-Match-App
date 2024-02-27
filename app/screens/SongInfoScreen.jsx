@@ -1,18 +1,16 @@
 // SongInfoScreen.jsx
 import React, { useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import CustomHeader from '../components/CustomHeader';
 import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
 import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const SongInfoScreen = ({ route }) => {
     const { track, audioFeatures } = route.params;
-    const navigation = useNavigation();
     const [isDropdownVisible, setDropdownVisible] = useState(false);
-
     const key = `${keyNumberToLetter(audioFeatures.key)} ${modeNumberToMusicalKey(audioFeatures.mode)}`;
     const timeSignature = timeNumberToFraction(audioFeatures.time_signature);
     const tempo = audioFeatures.tempo.toFixed(2);
@@ -23,11 +21,34 @@ const SongInfoScreen = ({ route }) => {
         setDropdownVisible(true);
     };
 
-    const handleSaveSong = () => {
-        // Implement the save functionality here
-        setDropdownVisible(false);
-        console.log('Song saved!');
-    };
+
+// Call this function when you need to navigate, for example in the handleSaveSong function
+const handleSaveSong = async () => {
+    try {
+        // Fetch the existing saved songs from storage
+        const savedSongsJson = await AsyncStorage.getItem('savedSongs');
+        let savedSongs = savedSongsJson ? JSON.parse(savedSongsJson) : [];
+
+        // Check if the song is already saved
+        const isAlreadySaved = savedSongs.some(savedSong => savedSong.track.id === track.id);
+
+        if (isAlreadySaved) {
+            console.log('Song already saved!');
+            // Optionally, you can display a message to the user indicating that the song is already saved
+        } else {
+            // Add the new song
+            savedSongs.push({ track, audioFeatures });
+
+            // Save the updated songs array back to storage
+            await AsyncStorage.setItem('savedSongs', JSON.stringify(savedSongs));
+
+            console.log('Song saved!', savedSongs);
+        }
+    } catch (error) {
+        console.error('Error saving song: ', error);
+    }
+    setDropdownVisible(false);
+};
 
     return (
         <View style={{ flex: 1 }}>
