@@ -6,7 +6,8 @@ import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
 import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import db from '../../firebaseConfig'; 
+import { ref, push } from 'firebase/database';
 
 const SongInfoScreen = ({ route }) => {
     const { track, audioFeatures } = route.params;
@@ -21,34 +22,22 @@ const SongInfoScreen = ({ route }) => {
         setDropdownVisible(true);
     };
 
-
-// Call this function when you need to navigate, for example in the handleSaveSong function
-const handleSaveSong = async () => {
-    try {
-        // Fetch the existing saved songs from storage
-        const savedSongsJson = await AsyncStorage.getItem('savedSongs');
-        let savedSongs = savedSongsJson ? JSON.parse(savedSongsJson) : [];
-
-        // Check if the song is already saved
-        const isAlreadySaved = savedSongs.some(savedSong => savedSong.track.id === track.id);
-
-        if (isAlreadySaved) {
-            console.log('Song already saved!');
-            // Optionally, you can display a message to the user indicating that the song is already saved
-        } else {
-            // Add the new song
-            savedSongs.push({ track, audioFeatures });
-
-            // Save the updated songs array back to storage
-            await AsyncStorage.setItem('savedSongs', JSON.stringify(savedSongs));
-
-            console.log('Song saved!', savedSongs);
+    const handleSaveSong = async () => {
+        try {
+            // Create a reference to the 'savedSongs' collection
+            const savedSongsRef = ref(db, 'savedSongs');
+    
+            // Push the song data to the "savedSongs" collection
+            await push(savedSongsRef, {
+                track,
+                audioFeatures
+            });
+            console.log('Song saved to Firebase:', { track, audioFeatures });
+        } catch (error) {
+            console.error('Error saving song: ', error);
         }
-    } catch (error) {
-        console.error('Error saving song: ', error);
-    }
-    setDropdownVisible(false);
-};
+        setDropdownVisible(false);
+    };
 
     return (
         <View style={{ flex: 1 }}>

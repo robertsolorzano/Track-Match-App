@@ -64,11 +64,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff', 
   },
-  resultTitle: {
-    color: '#000',
-    fontSize: 18,
-    marginBottom: 10,
-  },
 });
 
 export default SearchScreen;

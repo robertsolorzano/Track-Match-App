@@ -1,4 +1,4 @@
-// LibraryStackNavigator.jsx
+// LibraryStackNavigator.jsx might implement later 
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LibraryScreen from '../screens/LibraryScreen';
@@ -13,7 +13,6 @@ const LibraryStackNavigator = () => {
       }}
     >
       <Stack.Screen name="Library" component={LibraryScreen} />
-      // You can add more screens here that should be part of the Library navigation stack
     </Stack.Navigator>
   );
 };
