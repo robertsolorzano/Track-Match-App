@@ -1,11 +1,11 @@
-// SearchScreen.jsx
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import SearchBar from '../components/SearchBar'; 
-import SearchResults from '../components/SearchResults'; 
+import { View, StyleSheet, ActivityIndicator } from 'react-native'; // Import ActivityIndicator
+import SearchBar from '../components/SearchBar';
+import SearchResults from '../components/SearchResults';
 
-const SearchScreen  = () => {
+const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // State to manage loading state
   const [searchResults, setSearchResults] = useState({
     analysisSongs: [],
     relativeSongs: [],
@@ -17,6 +17,7 @@ const SearchScreen  = () => {
   });
 
   const handleSearch = async () => {
+    setIsLoading(true); // Set loading to true before fetching
     try {
       const response = await fetch('http://192.168.0.51:3000/search', {
         method: 'POST',
@@ -41,9 +42,10 @@ const SearchScreen  = () => {
         original: data.original,
         originalTrack: data.originalTrack
       });
-
     } catch (error) {
       console.error('Error searching for tracks:', error);
+    } finally {
+      setIsLoading(false); // Set loading to false after fetching
     }
   };
 
@@ -55,7 +57,13 @@ const SearchScreen  = () => {
         setSearchText={setSearchText}
         onSearch={handleSearch}
       />
-      <SearchResults results={searchResults} />
+      {isLoading ? ( // Conditional rendering based on loading state
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#999999" />
+        </View>
+      ) : (
+        <SearchResults results={searchResults} />
+      )}
     </View>
   );
 };
@@ -63,7 +71,15 @@ const SearchScreen  = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center', // Center the loader vertically
+    alignItems: 'center', // Center the loader horizontally
+  },
+  searchBar: {
+    // Your existing styles for searchBar
   },
 });
 

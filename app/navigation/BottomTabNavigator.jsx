@@ -1,11 +1,12 @@
 // BottomTabNavigator.jsx
 import React from 'react';
-import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
-import LibraryScreen from '../screens/LibraryScreen';
 import SearchStackNavigator from './SearchStackNavigator';
 import { Ionicons } from '@expo/vector-icons';
+import LibraryStackNavigator from './LibraryStackNavigator'; // Import the new stack navigator
+
 
 const Tab = createBottomTabNavigator();
 
@@ -51,24 +52,9 @@ const BottomTabNavigator = () => {
       />
 <Tab.Screen
   name="Library"
-  component={LibraryScreen}
-  options={{
-    headerShown: true,
-    headerTitle: "Library",
-    headerRight: () => (
-      <View style={styles.headerRight}>
-        <TouchableOpacity onPress={() => console.log('Settings pressed!')} style={styles.iconButton}>
-          <Ionicons name="settings-outline" size={24} color="grey" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('Logo pressed!')} style={styles.LogoButton}>
-          {/* Replace the image with a circular icon */}
-          <Ionicons name="ellipse" size={44} color="grey" />
-        </TouchableOpacity>
-      </View>
-    ),
-  }}
+  component={LibraryStackNavigator}
+  options={{ headerShown: false }} // Ensure headers are managed within the stack
 />
-
     </Tab.Navigator>
   );
 };
