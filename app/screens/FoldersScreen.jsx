@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
-import LibrarySearchBar from '../components/LibrarySearchBar'; 
+import LibrarySearchBar from '../components/LibrarySearchBar';
 import { keyNumberToLetter, modeNumberToMusicalKey } from '../utils/musicUtils'; // Import musicUtils functions
 
 const FoldersScreen = () => {
@@ -25,7 +25,9 @@ const FoldersScreen = () => {
         if (!foldersMap[folderName]) {
           foldersMap[folderName] = [];
         }
-        foldersMap[folderName].push(song);
+        // Assuming album art is available in the first image of the album images array
+        const albumArt = song.track.album.images.length > 0 ? song.track.album.images[0].url : '';
+        foldersMap[folderName].push({ ...song, albumArt });
       });
       const newFolders = Object.keys(foldersMap).map(folderName => ({
         id: folderName,
@@ -34,10 +36,11 @@ const FoldersScreen = () => {
       }));
       setFolders(newFolders);
     });
-  
+
     return () => unsubscribe();
   };
-  
+
+
   const navigation = useNavigation();
 
   const handleFolderPress = (folder) => {
@@ -46,16 +49,23 @@ const FoldersScreen = () => {
 
   return (
     <View style={styles.container}>
-      <LibrarySearchBar searchText="" setSearchText={() => {}} /> 
+      <LibrarySearchBar searchText="" setSearchText={() => { }} />
       <FlatList
         data={folders}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handleFolderPress(item)}>
             <View style={styles.folderItem}>
-              <Text style={styles.folderText}>{item.name}</Text> 
-              {/* Display song count for each folder */}
-              <Text style={styles.songCount}>{item.songs ? `${item.songs.length} songs` : ''}</Text>
+              <View style={styles.folderInfo}>
+                <Text style={styles.folderText}>{item.name}</Text>
+                {/* Display song count for each folder */}
+                <Text style={styles.songCount}>{item.songs ? `${item.songs.length} songs` : ''}</Text>
+              </View>
+              <View style={styles.albumArtContainer}>
+                {item.songs.slice(0, 3).map((song, index) => (
+                  <Image key={`${item.id}-${index}`} source={{ uri: song.albumArt }} style={styles.albumArt} />
+                ))}
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -78,11 +88,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  folderInfo: {
+    flexDirection: 'column',
+  },
   folderText: {
     fontSize: 18,
   },
   songCount: {
     color: '#888',
+  },
+  albumArtContainer: {
+    flexDirection: 'row',
+  },
+  albumArt: {
+    width: 50,
+    height: 50,
+    marginRight: 5,
   },
 });
 
