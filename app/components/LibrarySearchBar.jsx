@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const LocalSearchBar = ({ searchText, setSearchText }) => {
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
-  // Adjust the focus and cancel logic as needed for your local filtering
   const handleFocus = () => {
     Animated.timing(animatedWidth, {
       toValue: 1,

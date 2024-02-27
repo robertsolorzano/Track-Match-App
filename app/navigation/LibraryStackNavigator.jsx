@@ -4,7 +4,7 @@ import LibraryScreen from '../screens/LibraryScreen';
 import SongInfoScreen from '../screens/SongInfoScreen';
 // Correctly import these from react-native
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Ensure Ionicons is also imported correctly
+import { Ionicons } from '@expo/vector-icons'; 
 
 const Stack = createStackNavigator();
 
