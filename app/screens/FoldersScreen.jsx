@@ -3,7 +3,9 @@ import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
 import LibrarySearchBar from '../components/LibrarySearchBar';
-import { keyNumberToLetter, modeNumberToMusicalKey } from '../utils/musicUtils'; // Import musicUtils functions
+import { keyNumberToLetter, modeNumberToMusicalKey } from '../utils/musicUtils';
+import AlbumArtLayer from '../components/AlbumArtLayer';
+
 
 const FoldersScreen = () => {
   const [folders, setFolders] = useState([]);
@@ -56,16 +58,22 @@ const FoldersScreen = () => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handleFolderPress(item)}>
             <View style={styles.folderItem}>
-              <View style={styles.folderInfo}>
-                <Text style={styles.folderText}>{item.name}</Text>
-                {/* Display song count for each folder */}
-                <Text style={styles.songCount}>{item.songs ? `${item.songs.length} songs` : ''}</Text>
-              </View>
+        
+              {/* Album Art Container */}
               <View style={styles.albumArtContainer}>
                 {item.songs.slice(0, 3).map((song, index) => (
-                  <Image key={`${item.id}-${index}`} source={{ uri: song.albumArt }} style={styles.albumArt} />
+                  <AlbumArtLayer key={`${item.id}-${index}`} albumArt={song.albumArt} />
                 ))}
               </View>
+        
+              {/* Folder Info */}
+              <View style={styles.folderInfo}>
+                <Text style={styles.folderText}>{item.name}</Text>
+              </View>
+              <View style={styles.songCountContainer}>
+              <Text style={styles.songCountText}>{item.songs ? `${item.songs.length} songs` : ''}</Text>
+              </View>
+        
             </View>
           </TouchableOpacity>
         )}
@@ -81,7 +89,6 @@ const styles = StyleSheet.create({
   },
   folderItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -90,11 +97,15 @@ const styles = StyleSheet.create({
   },
   folderInfo: {
     flexDirection: 'column',
+    marginLeft: 80,
   },
   folderText: {
     fontSize: 18,
   },
-  songCount: {
+  songCountContainer: {
+    marginLeft: 30,
+  },
+  songCountText: {
     color: '#888',
   },
   albumArtContainer: {

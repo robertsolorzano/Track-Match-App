@@ -16,7 +16,7 @@ const LibraryStackNavigator = () => {
         component={FoldersScreen}
         options={{
           headerShown: true,
-          headerTitle: "Folders",
+          headerTitle: "Library",
           headerRight: () => (
             <View style={styles.headerRight}>
               <TouchableOpacity onPress={() => console.log('Settings pressed!')} style={styles.iconButton}>
