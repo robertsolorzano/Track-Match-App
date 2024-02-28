@@ -1,6 +1,6 @@
 // SongInfoScreen.jsx
-import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, Image, StyleSheet, Animated } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
@@ -18,6 +18,16 @@ const SongInfoScreen = ({ route }) => {
     const tempo = audioFeatures.tempo.toFixed(2);
     const duration = msToTime(audioFeatures.duration_ms);
     const previewUrl = track.preview_url;
+
+    // Initialize an Animated.Value for scroll position
+    const scrollY = useRef(new Animated.Value(0)).current;
+
+    // Interpolate the scroll position to header opacity
+    const backgroundColor = scrollY.interpolate({
+        inputRange: [0, 700],
+        outputRange: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.75)'],
+        extrapolate: 'clamp',
+    });
 
     const handleOptionsPress = () => {
         setDropdownVisible(true);
@@ -51,10 +61,18 @@ const SongInfoScreen = ({ route }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={styles.fixedHeader}>
+            <Animated.View style={[{ zIndex: 1, width: '100%', position: 'absolute', top: 0 }, { backgroundColor }]}>
                 <CustomHeader onOptionsPress={handleOptionsPress} />
-            </View>
-            <ScrollView style={{ flex: 1 }}>
+            </Animated.View>
+            <Animated.ScrollView
+                style={{ flex: 1, marginTop: 0 }} 
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: false } 
+                )}
+                scrollEventThrottle={16}
+            >
+
                 <View style={styles.container}>
 
                     <Image
@@ -102,7 +120,7 @@ const SongInfoScreen = ({ route }) => {
                         <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
                     </View>
                 </View>
-            </ScrollView>
+            </Animated.ScrollView>
             <DropdownMenu
                 isVisible={isDropdownVisible}
                 onClose={() => setDropdownVisible(false)}
@@ -116,6 +134,7 @@ const styles = StyleSheet.create({
     fixedHeader: {
         zIndex: 1,
         width: '100%',
+        backgroundColor: '#F1F0F0',
     },
     container: {
         flex: 1,
@@ -133,7 +152,7 @@ const styles = StyleSheet.create({
         height: 280,
         borderRadius: 4,
         resizeMode: 'contain',
-        marginTop: 0,
+        marginTop: 50,
     },
     trackInfoContainer: {
         flexDirection: 'row',
