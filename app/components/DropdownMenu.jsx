@@ -10,7 +10,6 @@ const DropdownMenu = ({ isVisible, onSave }) => {
       <TouchableOpacity onPress={onSave} style={styles.menuItem}>
         <Text style={styles.menuItemText}>Save Song</Text>
       </TouchableOpacity>
-      {/* Additional menu items can be added here */}
     </View>
   );
 };

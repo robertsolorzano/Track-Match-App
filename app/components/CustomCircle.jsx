@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import { Svg, Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; // Import Material Community Icons from Expo
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const CustomCircle = ({ title, value }) => {
   const size = 55;
@@ -43,7 +43,7 @@ const CustomCircle = ({ title, value }) => {
   };
 
   // Select icon based on title
-  const icon = iconMap[title] || 'information-outline'; // Default icon
+  const icon = iconMap[title] || 'information-outline'; 
 
   return (
     <View style={styles.circleContainer}>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '12%',
     left: '47%',
-    transform: [{ translateX: -12 }, { translateY: -12 }], // Adjust according to icon size
+    transform: [{ translateX: -12 }, { translateY: -12 }], 
   },
   title: {
     marginTop: 10,

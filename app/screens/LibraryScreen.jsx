@@ -1,22 +1,26 @@
 // LibraryScreen.jsx
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, RefreshControl } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import TrackElement from '../components/TrackElement';
 import LibrarySearchBar from '../components/LibrarySearchBar';
-import { useNavigation } from '@react-navigation/native';
 
-const LibraryScreen = () => {
-  const [likedSongs, setLikedSongs] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State for the search query
+const LibraryScreen = ({ route }) => {
+  const { folderSongs } = route.params || { folderSongs: [] };
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
 
   useEffect(() => {
-    loadSongs();
+    if (folderSongs.length === 0) {
+      loadSongs();
+    }
   }, []);
 
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
+
   const loadSongs = () => {
-    setRefreshing(true);
     const db = getDatabase();
     const savedSongsRef = ref(db, 'savedSongs');
     const unsubscribe = onValue(savedSongsRef, (snapshot) => {
@@ -26,37 +30,31 @@ const LibraryScreen = () => {
         audioFeatures: item.audioFeatures 
       })) : [];
       setLikedSongs(savedSongs);
-      setRefreshing(false);
     });
     
     return () => unsubscribe();
   };
 
-  const onRefresh = () => {
-    loadSongs();
-  };
-
-  // Filter songs based on search query
-  const filteredSongs = likedSongs.filter(song =>
-    song.track.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    song.track.artists.join('').toLowerCase().includes(searchQuery.toLowerCase()) 
-  );
+  // Sort and filter songs based on search query and tempo
+  const sortedAndFilteredSongs = folderSongs
+    .filter(song =>
+      song.track.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      song.track.artists.join('').toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      const tempoA = a.audioFeatures.tempo;
+      const tempoB = b.audioFeatures.tempo;
+      return sortOrder === 'asc' ? tempoA - tempoB : tempoB - tempoA;
+    });
 
   return (
     <View style={styles.container}>
-      <LibrarySearchBar searchText={searchQuery} setSearchText={setSearchQuery} />
+      <LibrarySearchBar searchText={searchQuery} setSearchText={setSearchQuery} toggleSortOrder={toggleSortOrder} />
       <FlatList
-        data={filteredSongs} // Use the filtered list based on search
+        data={sortedAndFilteredSongs} // Use the sorted and filtered list
         keyExtractor={(item) => item.track.id.toString()}
         renderItem={({ item }) => <TrackElement track={item.track} audioFeatures={item.audioFeatures} />}
         contentContainerStyle={styles.flatListContentContainer}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={['#9Bd35A', '#689F38']}
-          />
-        }
       />
     </View>
   );

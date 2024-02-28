@@ -1,13 +1,14 @@
 // SongInfoScreen.jsx
-import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, Image, StyleSheet, Animated } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
 import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
-import db from '../../firebaseConfig'; 
-import { ref, push } from 'firebase/database';
+import db from '../../firebaseConfig';
+import { ref, push, query, orderByChild, equalTo, get } from 'firebase/database';
+
 
 const SongInfoScreen = ({ route }) => {
     const { track, audioFeatures } = route.params;
@@ -18,32 +19,61 @@ const SongInfoScreen = ({ route }) => {
     const duration = msToTime(audioFeatures.duration_ms);
     const previewUrl = track.preview_url;
 
+    // Initialize an Animated.Value for scroll position
+    const scrollY = useRef(new Animated.Value(0)).current;
+
+    // Interpolate the scroll position to header opacity
+    const backgroundColor = scrollY.interpolate({
+        inputRange: [0, 700],
+        outputRange: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.75)'],
+        extrapolate: 'clamp',
+    });
+
     const handleOptionsPress = () => {
         setDropdownVisible(true);
     };
 
     const handleSaveSong = async () => {
         try {
-            // Create a reference to the 'savedSongs' collection
+            // Reference to the 'savedSongs' collection
             const savedSongsRef = ref(db, 'savedSongs');
-    
-            // Push the song data to the "savedSongs" collection
-            await push(savedSongsRef, {
-                track,
-                audioFeatures
-            });
-            console.log('Song saved to Firebase:', { track, audioFeatures });
+
+            // Query the database for a song with the same track ID
+            const queryRef = query(savedSongsRef, orderByChild('track/id'), equalTo(track.id));
+            const snapshot = await get(queryRef);
+
+            if (!snapshot.exists()) {
+                // If the song doesn't exist, save it to Firebase
+                await push(savedSongsRef, {
+                    track,
+                    audioFeatures
+                });
+                console.log('Song saved to Firebase:', track.name);
+            } else {
+                console.log('Song already exists, not saving duplicate.');
+            }
         } catch (error) {
             console.error('Error saving song: ', error);
         }
         setDropdownVisible(false);
     };
 
+
     return (
         <View style={{ flex: 1 }}>
-            <ScrollView style={{ flex: 1 }}>
+            <Animated.View style={[{ zIndex: 1, width: '100%', position: 'absolute', top: 0 }, { backgroundColor }]}>
+                <CustomHeader onOptionsPress={handleOptionsPress} />
+            </Animated.View>
+            <Animated.ScrollView
+                style={{ flex: 1, marginTop: 0 }} 
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: false } 
+                )}
+                scrollEventThrottle={16}
+            >
+
                 <View style={styles.container}>
-                    <CustomHeader onOptionsPress={handleOptionsPress} />
 
                     <Image
                         source={{ uri: track.album.images[0].url }}
@@ -90,7 +120,7 @@ const SongInfoScreen = ({ route }) => {
                         <CustomCircle title="Speechiness" value={audioFeatures.speechiness} />
                     </View>
                 </View>
-            </ScrollView>
+            </Animated.ScrollView>
             <DropdownMenu
                 isVisible={isDropdownVisible}
                 onClose={() => setDropdownVisible(false)}
@@ -101,6 +131,11 @@ const SongInfoScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+    fixedHeader: {
+        zIndex: 1,
+        width: '100%',
+        backgroundColor: '#F1F0F0',
+    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -117,7 +152,7 @@ const styles = StyleSheet.create({
         height: 280,
         borderRadius: 4,
         resizeMode: 'contain',
-        marginTop: 0,
+        marginTop: 50,
     },
     trackInfoContainer: {
         flexDirection: 'row',

@@ -1,6 +1,6 @@
 // AudioPlayer.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Audio } from 'expo-av';
 import { MaterialIcons } from '@expo/vector-icons';
 

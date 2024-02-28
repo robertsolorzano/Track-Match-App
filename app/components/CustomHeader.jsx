@@ -1,24 +1,28 @@
 // CustomHeader.jsx
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import {TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const CustomHeader = ({ onOptionsPress }) => {
+const CustomHeader = ({ onOptionsPress, opacity }) => {
     const navigation = useNavigation();
+    const headerStyle = [
+        styles.headerContainer,
+        { opacity: opacity || 1 } // Default opacity is 1 if not provided
+    ];
 
     return (
-        <View style={styles.headerContainer}>
+        <Animated.View style={headerStyle}>
             {/* Custom Back Button */}
-            <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
-                <Ionicons name="chevron-back" size={30} color="black" />
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Ionicons name="chevron-back" size={30} color="#FF4801" />
             </TouchableOpacity>
 
             {/* Options Button */}
-            <TouchableOpacity style={styles.iconButton} onPress={onOptionsPress}>
-                <Ionicons name="ellipsis-horizontal" size={30} color="black" />
+            <TouchableOpacity style={styles.details} onPress={onOptionsPress}>
+                <Ionicons name="ellipsis-horizontal" size={22} color="#FF4801" />
             </TouchableOpacity>
-        </View>
+        </Animated.View>
     );
 };
 
@@ -28,11 +32,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        padding: 10,
+        marginTop: 60,
     },
-    iconButton: {
-        padding: 10,
-    },
+    details: {
+        marginRight: 14,
+    }
 });
 
 export default CustomHeader;

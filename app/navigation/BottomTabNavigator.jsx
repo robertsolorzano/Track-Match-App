@@ -1,11 +1,10 @@
 // BottomTabNavigator.jsx
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/Homescreen';
 import SearchStackNavigator from './SearchStackNavigator';
 import { Ionicons } from '@expo/vector-icons';
-import LibraryStackNavigator from './LibraryStackNavigator'; // Import the new stack navigator
+import LibraryStackNavigator from './LibraryStackNavigator'; 
 
 
 const Tab = createBottomTabNavigator();
@@ -27,7 +26,7 @@ const BottomTabNavigator = () => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: '#FF4801',
         tabBarInactiveTintColor: 'gray',
       })}
     >
@@ -53,25 +52,10 @@ const BottomTabNavigator = () => {
 <Tab.Screen
   name="Library"
   component={LibraryStackNavigator}
-  options={{ headerShown: false }} // Ensure headers are managed within the stack
+  options={{ headerShown: false }}
 />
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  headerRight: {
-    flexDirection: 'row',
-    marginRight: 0,
-  },
-  iconButton: {
-    marginRight: 10,
-    alignSelf: 'center',
-
-  },
-  LogoButton: {
-    marginRight: 10,
-  },
-});
 
 export default BottomTabNavigator;
