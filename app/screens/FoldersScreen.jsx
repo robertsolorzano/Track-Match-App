@@ -1,79 +1,124 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, FlatList, StyleSheet, TouchableOpacity, Text, Button } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { useNavigation } from '@react-navigation/native';
-import LibrarySearchBar from '../components/LibrarySearchBar';
 import { keyNumberToLetter, modeNumberToMusicalKey } from '../utils/musicUtils';
 import AlbumArtLayer from '../components/AlbumArtLayer';
 
-
 const FoldersScreen = () => {
   const [folders, setFolders] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('Key'); // Default filter to 'Key'
 
   useEffect(() => {
     loadFolders();
-  }, []);
+  }, [activeFilter]); // Re-load folders when activeFilter changes
+
+  const groupSongsByKey = (songs) => {
+    const foldersMap = {};
+    songs.forEach(song => {
+      const { key, mode } = song.audioFeatures;
+      const folderName = `${keyNumberToLetter(key)} ${modeNumberToMusicalKey(mode)}`;
+      if (!foldersMap[folderName]) {
+        foldersMap[folderName] = [];
+      }
+      foldersMap[folderName].push(song);
+    });
+    return foldersMap;
+  };
+
+  const groupSongsByBPM = (songs) => {
+    // Define your BPM ranges
+    const bpmRanges = ['0-120', '121-140', '141+']; // Example ranges
+    const foldersMap = {};
+    songs.forEach(song => {
+      const bpm = song.audioFeatures.tempo;
+      let range = bpmRanges.find(range => {
+        const [min, max] = range.split('-').map(Number);
+        return bpm >= min && (max ? bpm <= max : true);
+      }) || '141+';
+
+      if (!foldersMap[range]) {
+        foldersMap[range] = [];
+      }
+      foldersMap[range].push(song);
+    });
+    return foldersMap;
+  };
 
   const loadFolders = () => {
     const db = getDatabase();
     const savedSongsRef = ref(db, 'savedSongs');
-    const unsubscribe = onValue(savedSongsRef, (snapshot) => {
-      const data = snapshot.val();
-      const songs = data ? Object.values(data) : [];
-      const foldersMap = {};
-      songs.forEach(song => {
-        const { key, mode } = song.audioFeatures; // Extract key and mode
-        const folderName = `${keyNumberToLetter(key)} ${modeNumberToMusicalKey(mode)}`;
-        if (!foldersMap[folderName]) {
-          foldersMap[folderName] = [];
-        }
-        // Assuming album art is available in the first image of the album images array
-        const albumArt = song.track.album.images.length > 0 ? song.track.album.images[0].url : '';
-        foldersMap[folderName].push({ ...song, albumArt });
-      });
-      const newFolders = Object.keys(foldersMap).map(folderName => ({
-        id: folderName,
-        name: folderName,
-        songs: foldersMap[folderName]
-      }));
-      setFolders(newFolders);
-    });
+    onValue(savedSongsRef, (snapshot) => {
+        const data = snapshot.val();
+        const songs = data ? Object.values(data) : [];
+        let foldersMap = {};
 
-    return () => unsubscribe();
-  };
+        if (activeFilter === 'Key') {
+            foldersMap = groupSongsByKey(songs);
+        } else if (activeFilter === 'BPM') {
+            foldersMap = groupSongsByBPM(songs);
+        }
+
+        // Custom sorting for BPM folders
+        let sortedFolderNames = Object.keys(foldersMap);
+        if (activeFilter === 'BPM') {
+            sortedFolderNames = sortedFolderNames.sort((a, b) => {
+                // Handle '141+' as a special case
+                if (a.includes('+')) return 1;
+                if (b.includes('+')) return -1;
+
+                const rangeA = a.split('-').map(Number);
+                const rangeB = b.split('-').map(Number);
+
+                return rangeA[0] - rangeB[0] || rangeA[1] - rangeB[1];
+            });
+        }
+
+        const newFolders = sortedFolderNames.map(folderName => ({
+            id: folderName,
+            name: folderName,
+            songs: foldersMap[folderName]
+        }));
+        setFolders(newFolders);
+    });
+};
 
 
   const navigation = useNavigation();
 
   const handleFolderPress = (folder) => {
-    navigation.navigate('Library', { folderSongs: folder.songs }); // Pass folder songs as navigation param
+    navigation.navigate('Library', { folderSongs: folder.songs });
   };
 
   return (
     <View style={styles.container}>
-      <LibrarySearchBar searchText="" setSearchText={() => { }} />
+      <View style={styles.buttonContainer}>
+        <Button title="Key" onPress={() => setActiveFilter('Key')} color={activeFilter === 'Key' ? 'blue' : 'grey'} />
+        <Button title="BPM" onPress={() => setActiveFilter('BPM')} color={activeFilter === 'BPM' ? 'blue' : 'grey'} />
+      </View>
       <FlatList
         data={folders}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handleFolderPress(item)}>
             <View style={styles.folderItem}>
-        
               {/* Album Art Container */}
-              <View style={styles.albumArtContainer}>
-                {item.songs.slice(0, 3).map((song, index) => (
-                  <AlbumArtLayer key={`${item.id}-${index}`} albumArt={song.albumArt} />
+              <View style={styles.albumArtStackContainer}>
+                {item.songs.slice(0, 3).reverse().map((song, index) => (
+                  <AlbumArtLayer
+                    key={`${item.id}-${index}`}
+                    albumArt={song.track.album.images.length > 0 ? song.track.album.images[0].url : ''}
+                    zIndex={index}
+                    translateX={6 * index}
+                    translateY={6 * index}
+                  />
                 ))}
               </View>
-        
               {/* Folder Info */}
               <View style={styles.folderInfo}>
                 <Text style={styles.folderText}>{item.name}</Text>
+                <Text style={styles.songCountText}>{item.songs.length} songs</Text>
               </View>
-              <View style={styles.songCountContainer}>
-              <Text style={styles.songCountText}>{item.songs ? `${item.songs.length} songs` : ''}</Text>
-              </View>
-        
             </View>
           </TouchableOpacity>
         )}
@@ -87,6 +132,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
   folderItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,24 +147,17 @@ const styles = StyleSheet.create({
   },
   folderInfo: {
     flexDirection: 'column',
-    marginLeft: 80,
+    marginLeft: 100,
   },
   folderText: {
     fontSize: 18,
   },
-  songCountContainer: {
-    marginLeft: 30,
-  },
   songCountText: {
     color: '#888',
   },
-  albumArtContainer: {
-    flexDirection: 'row',
-  },
-  albumArt: {
-    width: 50,
-    height: 50,
-    marginRight: 5,
+  albumArtStackContainer: {
+    height: 80, 
+    marginRight: 10, 
   },
 });
 
