@@ -7,7 +7,8 @@ import AudioPlayer from '../components/AudioPlayer';
 import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import db from '../../firebaseConfig'; 
-import { ref, push } from 'firebase/database';
+import { ref, push, query, orderByChild, equalTo, get } from 'firebase/database';
+
 
 const SongInfoScreen = ({ route }) => {
     const { track, audioFeatures } = route.params;
@@ -24,20 +25,29 @@ const SongInfoScreen = ({ route }) => {
 
     const handleSaveSong = async () => {
         try {
-            // Create a reference to the 'savedSongs' collection
+            // Reference to the 'savedSongs' collection
             const savedSongsRef = ref(db, 'savedSongs');
-    
-            // Push the song data to the "savedSongs" collection
-            await push(savedSongsRef, {
-                track,
-                audioFeatures
-            });
-            console.log('Song saved to Firebase:', { track, audioFeatures });
+            
+            // Query the database for a song with the same track ID
+            const queryRef = query(savedSongsRef, orderByChild('track/id'), equalTo(track.id));
+            const snapshot = await get(queryRef);
+            
+            if (!snapshot.exists()) {
+                // If the song doesn't exist, save it to Firebase
+                await push(savedSongsRef, {
+                    track,
+                    audioFeatures
+                });
+                console.log('Song saved to Firebase:', track.name);
+            } else {
+                console.log('Song already exists, not saving duplicate.');
+            }
         } catch (error) {
             console.error('Error saving song: ', error);
         }
         setDropdownVisible(false);
     };
+    
 
     return (
         <View style={{ flex: 1 }}>
