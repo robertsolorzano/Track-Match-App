@@ -10,13 +10,13 @@ const CustomHeader = ({ onOptionsPress }) => {
     return (
         <View style={styles.headerContainer}>
             {/* Custom Back Button */}
-            <TouchableOpacity style={styles.iconButton} onPress={() => navigation.goBack()}>
-                <Ionicons name="chevron-back" size={30} color="black" />
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Ionicons name="chevron-back" size={30} color="#FF4801" />
             </TouchableOpacity>
 
             {/* Options Button */}
-            <TouchableOpacity style={styles.iconButton} onPress={onOptionsPress}>
-                <Ionicons name="ellipsis-horizontal" size={30} color="black" />
+            <TouchableOpacity style={styles.details} onPress={onOptionsPress}>
+                <Ionicons name="ellipsis-horizontal" size={22} color="#FF4801" />
             </TouchableOpacity>
         </View>
     );
@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        padding: 10,
+        marginTop: 60,
     },
-    iconButton: {
-        padding: 10,
-    },
+    details: {
+        marginRight: 14,
+    }
 });
 
 export default CustomHeader;

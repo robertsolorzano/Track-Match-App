@@ -6,7 +6,7 @@ import DropdownMenu from '../components/DropdownMenu';
 import AudioPlayer from '../components/AudioPlayer';
 import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
-import db from '../../firebaseConfig'; 
+import db from '../../firebaseConfig';
 import { ref, push, query, orderByChild, equalTo, get } from 'firebase/database';
 
 
@@ -27,11 +27,11 @@ const SongInfoScreen = ({ route }) => {
         try {
             // Reference to the 'savedSongs' collection
             const savedSongsRef = ref(db, 'savedSongs');
-            
+
             // Query the database for a song with the same track ID
             const queryRef = query(savedSongsRef, orderByChild('track/id'), equalTo(track.id));
             const snapshot = await get(queryRef);
-            
+
             if (!snapshot.exists()) {
                 // If the song doesn't exist, save it to Firebase
                 await push(savedSongsRef, {
@@ -47,13 +47,15 @@ const SongInfoScreen = ({ route }) => {
         }
         setDropdownVisible(false);
     };
-    
+
 
     return (
         <View style={{ flex: 1 }}>
+            <View style={styles.fixedHeader}>
+                <CustomHeader onOptionsPress={handleOptionsPress} />
+            </View>
             <ScrollView style={{ flex: 1 }}>
                 <View style={styles.container}>
-                    <CustomHeader onOptionsPress={handleOptionsPress} />
 
                     <Image
                         source={{ uri: track.album.images[0].url }}
@@ -111,6 +113,10 @@ const SongInfoScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+    fixedHeader: {
+        zIndex: 1,
+        width: '100%',
+    },
     container: {
         flex: 1,
         alignItems: 'center',
