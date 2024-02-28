@@ -1,3 +1,4 @@
+// LibraryStackNavigator.jsx
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LibraryScreen from '../screens/LibraryScreen';

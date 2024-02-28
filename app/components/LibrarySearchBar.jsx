@@ -2,6 +2,7 @@
 import React, { useRef } from 'react';
 import { View, TextInput, Animated, StyleSheet, TouchableOpacity, Text, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const LibrarySearchBar = ({ searchText, setSearchText, toggleSortOrder }) => {
   const animatedWidth = useRef(new Animated.Value(0)).current;
@@ -65,7 +66,7 @@ const LibrarySearchBar = ({ searchText, setSearchText, toggleSortOrder }) => {
         />
         {searchText.length > 0 && (
           <TouchableOpacity onPress={clearInput} style={styles.clearIconContainer}>
-            <Icon name="times-circle" size={18} color="#303030" />
+            <FontAwesomeIcon name="times-circle" size={18} color="#303030" />
           </TouchableOpacity>
         )}
       </Animated.View>
@@ -124,9 +125,9 @@ const styles = StyleSheet.create({
   },
   filterIconContainer: {
     position: 'absolute',
-    right: 15, 
+    right: 15,
     height: '100%',
-    paddingHorizontal: 10, 
+    paddingHorizontal: 10,
     justifyContent: 'center',
   },
 });

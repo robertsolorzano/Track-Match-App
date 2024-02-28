@@ -1,8 +1,8 @@
+// SearchScreen.jsx
 import React, { useState } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native'; // Import ActivityIndicator
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
-
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State to manage loading state

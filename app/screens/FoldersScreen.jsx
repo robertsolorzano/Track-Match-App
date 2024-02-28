@@ -1,3 +1,4 @@
+// FoldersScreen.jsx
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Text, Button } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
@@ -7,7 +8,7 @@ import AlbumArtLayer from '../components/AlbumArtLayer';
 
 const FoldersScreen = () => {
   const [folders, setFolders] = useState([]);
-  const [activeFilter, setActiveFilter] = useState('Key'); // Default filter to 'Key'
+  const [activeFilter, setActiveFilter] = useState('Key');
 
   useEffect(() => {
     loadFolders();
@@ -27,23 +28,26 @@ const FoldersScreen = () => {
   };
 
   const groupSongsByBPM = (songs) => {
-    // Define your BPM ranges
-    const bpmRanges = ['0-120', '121-140', '141+']; // Example ranges
-    const foldersMap = {};
-    songs.forEach(song => {
-      const bpm = song.audioFeatures.tempo;
-      let range = bpmRanges.find(range => {
-        const [min, max] = range.split('-').map(Number);
-        return bpm >= min && (max ? bpm <= max : true);
-      }) || '141+';
+    // Define BPM ranges
+    const bpmRanges = ['0-59', '60-79', '80-99', '100-119', '120-139', '140-159', '160-179', '180+']; 
 
-      if (!foldersMap[range]) {
-        foldersMap[range] = [];
-      }
-      foldersMap[range].push(song);
+    const foldersMap = {};
+
+    songs.forEach(song => {
+        const bpm = song.audioFeatures.tempo;
+        let range = bpmRanges.find(range => {
+            const [min, max] = range.split('-').map(Number);
+            return bpm >= min && (max ? bpm <= max : true);
+        }) || '180+';
+
+        if (!foldersMap[range]) {
+            foldersMap[range] = [];
+        }
+        foldersMap[range].push(song);
     });
+
     return foldersMap;
-  };
+};
 
   const loadFolders = () => {
     const db = getDatabase();
@@ -93,8 +97,8 @@ const FoldersScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <Button title="Key" onPress={() => setActiveFilter('Key')} color={activeFilter === 'Key' ? 'blue' : 'grey'} />
-        <Button title="BPM" onPress={() => setActiveFilter('BPM')} color={activeFilter === 'BPM' ? 'blue' : 'grey'} />
+        <Button title="Key" onPress={() => setActiveFilter('Key')} color={activeFilter === 'Key' ? '#FF4801' : 'grey'} />
+        <Button title="BPM" onPress={() => setActiveFilter('BPM')} color={activeFilter === 'BPM' ? '#FF4801' : 'grey'} />
       </View>
       <FlatList
         data={folders}
