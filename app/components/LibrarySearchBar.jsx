@@ -1,7 +1,7 @@
 // LibrarySearchBar.jsx
 import React, { useRef } from 'react';
 import { View, TextInput, Animated, StyleSheet, TouchableOpacity, Text, Keyboard } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const LibrarySearchBar = ({ searchText, setSearchText, toggleSortOrder }) => {
   const animatedWidth = useRef(new Animated.Value(0)).current;
@@ -70,7 +70,7 @@ const LibrarySearchBar = ({ searchText, setSearchText, toggleSortOrder }) => {
         )}
       </Animated.View>
       <TouchableOpacity onPress={toggleSortOrder} style={styles.filterIconContainer}>
-        <Icon name="sliders" size={20} color="#303030" />
+        <Icon name="filter-list" size={20} color="#303030" />
       </TouchableOpacity>
       <Animated.View style={[styles.cancelButton, { right: cancelButtonRight, opacity: cancelButtonOpacity }]}>
         <TouchableOpacity onPress={handleCancel}>
