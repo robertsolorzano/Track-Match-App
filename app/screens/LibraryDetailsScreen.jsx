@@ -1,6 +1,6 @@
-// LibraryScreen.jsx
+// LibraryDetailsScreen.jsx
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import TrackElement from '../components/TrackElement';
 import LibrarySearchBar from '../components/LibrarySearchBar';
@@ -8,7 +8,7 @@ import LibrarySearchBar from '../components/LibrarySearchBar';
 const LibraryScreen = ({ route }) => {
   const { folderSongs } = route.params || { folderSongs: [] };
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
+  const [sortOrder, setSortOrder] = useState('asc'); 
 
   useEffect(() => {
     if (folderSongs.length === 0) {
@@ -51,7 +51,7 @@ const LibraryScreen = ({ route }) => {
     <View style={styles.container}>
       <LibrarySearchBar searchText={searchQuery} setSearchText={setSearchQuery} toggleSortOrder={toggleSortOrder} />
       <FlatList
-        data={sortedAndFilteredSongs} // Use the sorted and filtered list
+        data={sortedAndFilteredSongs} 
         keyExtractor={(item) => item.track.id.toString()}
         renderItem={({ item }) => <TrackElement track={item.track} audioFeatures={item.audioFeatures} />}
         contentContainerStyle={styles.flatListContentContainer}

@@ -1,11 +1,11 @@
 // LibraryStackNavigator.jsx
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LibraryScreen from '../screens/LibraryScreen';
-import FoldersScreen from '../screens/FoldersScreen'; // Import FoldersScreen
+import LibraryDetailsScreen from '../screens/LibraryDetailsScreen';
+import LibraryHomeScreen from '../screens/LibraryHomeScreen';
 import SongInfoScreen from '../screens/SongInfoScreen';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
@@ -13,8 +13,8 @@ const LibraryStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="Folders"
-        component={FoldersScreen}
+        name="LibraryHomeScreen"
+        component={LibraryHomeScreen}
         options={{
           headerShown: true,
           headerTitle: "Library",
@@ -31,8 +31,8 @@ const LibraryStackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="Library" 
-        component={LibraryScreen}
+        name="LibraryDetailsScreen"
+        component={LibraryDetailsScreen}
         options={{
           headerShown: true,
           headerTitle: "My Songs",

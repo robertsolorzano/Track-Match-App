@@ -1,4 +1,4 @@
-// FoldersScreen.jsx
+// LibraryHomeScreen.jsx
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, TouchableOpacity, Text, Button } from 'react-native';
 import { getDatabase, ref, onValue } from 'firebase/database';
@@ -91,7 +91,7 @@ const FoldersScreen = () => {
   const navigation = useNavigation();
 
   const handleFolderPress = (folder) => {
-    navigation.navigate('Library', { folderSongs: folder.songs });
+    navigation.navigate('LibraryDetailsScreen', { folderSongs: folder.songs });
   };
 
   return (

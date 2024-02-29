@@ -11,7 +11,7 @@ const AlbumArtLayer = ({ albumArt, zIndex, translateY, translateX }) => {
 
 const styles = StyleSheet.create({
   albumArtContainer: {
-    position: 'absolute', // enables absolute positioning
+    position: 'absolute', 
   },
   albumArt: {
     width: 75,
