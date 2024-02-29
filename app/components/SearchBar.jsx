@@ -1,7 +1,6 @@
-// SearchBar.jsx
 import React, { useState, useRef } from 'react';
 import { View, TextInput, Animated, StyleSheet, TouchableOpacity, Text, Keyboard } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SearchBar = ({ searchText, setSearchText, onSearch }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -95,10 +94,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#000000',
     borderRadius: 24,
-    backgroundColor: '#fff',
     height: 40,
-    paddingLeft: 10,
     left: 6,
+    overflow: 'hidden', // Ensure content inside BlurView doesn't overflow
   },
   searchInput: {
     flex: 1,
@@ -108,6 +106,7 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     zIndex: 10,
+    marginLeft: 10,
   },
   clearIconContainer: {
     paddingRight: 10,
