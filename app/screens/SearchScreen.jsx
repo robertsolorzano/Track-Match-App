@@ -1,12 +1,13 @@
 // SearchScreen.jsx
 import React, { useState } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native'; 
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { BlurView } from 'expo-blur'; 
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // State to manage loading state
+  const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState({
     analysisSongs: [],
     relativeSongs: [],
@@ -18,7 +19,7 @@ const SearchScreen = () => {
   });
 
   const handleSearch = async () => {
-    setIsLoading(true); // Set loading to true before fetching
+    setIsLoading(true);
     try {
       const response = await fetch('http://192.168.0.51:3000/search', {
         method: 'POST',
@@ -46,19 +47,20 @@ const SearchScreen = () => {
     } catch (error) {
       console.error('Error searching for tracks:', error);
     } finally {
-      setIsLoading(false); // Set loading to false after fetching
+      setIsLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <SearchBar
-        style={styles.searchBar}
-        searchText={searchText}
-        setSearchText={setSearchText}
-        onSearch={handleSearch}
-      />
-      {isLoading ? ( // Conditional rendering based on loading state
+      <BlurView intensity={100} style={styles.blurContainer}>
+        <SearchBar
+          searchText={searchText}
+          setSearchText={setSearchText}
+          onSearch={handleSearch}
+        />
+      </BlurView>
+      {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#999999" />
         </View>
@@ -74,10 +76,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
+  blurContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center', // Center the loader vertically
-    alignItems: 'center', // Center the loader horizontally
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

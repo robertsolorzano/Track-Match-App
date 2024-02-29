@@ -58,7 +58,7 @@ const SongInfoScreen = ({ route }) => {
         <View style={{ flex: 1 }}>
             <Animated.View style={[{ zIndex: 1, width: '100%', position: 'absolute', top: 0 }, { backgroundColor: 'transparent' }]}>
                 <BlurView
-                    intensity={75} 
+                    intensity={100} 
                     style={{ position: 'absolute', width: '100%', height: '100%' }}
                 />
                 <CustomHeader onOptionsPress={handleOptionsPress} />
