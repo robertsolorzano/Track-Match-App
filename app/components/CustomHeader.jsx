@@ -1,18 +1,14 @@
 // CustomHeader.jsx
 import React from 'react';
-import {TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import {TouchableOpacity, StyleSheet,  } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const CustomHeader = ({ onOptionsPress, opacity }) => {
+const CustomHeader = ({ onOptionsPress}) => {
     const navigation = useNavigation();
-    const headerStyle = [
-        styles.headerContainer,
-        { opacity: opacity || 1 } // Default opacity is 1 if not provided
-    ];
 
     return (
-        <Animated.View style={headerStyle}>
+        <View>
             {/* Custom Back Button */}
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                 <Ionicons name="chevron-back" size={30} color="#FF4801" />
@@ -22,7 +18,7 @@ const CustomHeader = ({ onOptionsPress, opacity }) => {
             <TouchableOpacity style={styles.details} onPress={onOptionsPress}>
                 <Ionicons name="ellipsis-horizontal" size={22} color="#FF4801" />
             </TouchableOpacity>
-        </Animated.View>
+        </View>
     );
 };
 

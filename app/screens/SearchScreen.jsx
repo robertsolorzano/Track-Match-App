@@ -1,8 +1,9 @@
 // SearchScreen.jsx
 import React, { useState } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native'; // Import ActivityIndicator
+import { View, StyleSheet, ActivityIndicator } from 'react-native'; 
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
+
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State to manage loading state
@@ -77,9 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // Center the loader vertically
     alignItems: 'center', // Center the loader horizontally
-  },
-  searchBar: {
-    // Your existing styles for searchBar
   },
 });
 
