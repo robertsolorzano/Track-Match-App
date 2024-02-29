@@ -8,6 +8,7 @@ import CustomCircle from '../components/CustomCircle';
 import { keyNumberToLetter, modeNumberToMusicalKey, timeNumberToFraction, msToTime } from '../utils/musicUtils';
 import db from '../../firebaseConfig';
 import { ref, push, query, orderByChild, equalTo, get } from 'firebase/database';
+import { BlurView } from 'expo-blur';
 
 
 const SongInfoScreen = ({ route }) => {
@@ -22,12 +23,6 @@ const SongInfoScreen = ({ route }) => {
     // Initialize an Animated.Value for scroll position
     const scrollY = useRef(new Animated.Value(0)).current;
 
-    // Interpolate the scroll position to header opacity
-    const backgroundColor = scrollY.interpolate({
-        inputRange: [0, 700],
-        outputRange: ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0.75)'],
-        extrapolate: 'clamp',
-    });
 
     const handleOptionsPress = () => {
         setDropdownVisible(true);
@@ -61,14 +56,18 @@ const SongInfoScreen = ({ route }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <Animated.View style={[{ zIndex: 1, width: '100%', position: 'absolute', top: 0 }, { backgroundColor }]}>
+            <Animated.View style={[{ zIndex: 1, width: '100%', position: 'absolute', top: 0 }, { backgroundColor: 'transparent' }]}>
+                <BlurView
+                    intensity={75} 
+                    style={{ position: 'absolute', width: '100%', height: '100%' }}
+                />
                 <CustomHeader onOptionsPress={handleOptionsPress} />
             </Animated.View>
             <Animated.ScrollView
-                style={{ flex: 1, marginTop: 0 }} 
+                style={{ flex: 1, marginTop: 0 }}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                    { useNativeDriver: false } 
+                    { useNativeDriver: false }
                 )}
                 scrollEventThrottle={16}
             >
